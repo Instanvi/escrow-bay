@@ -57,7 +57,7 @@ export default function Header() {
               href="#faq"
               className="text-base font-semibold text-slate-200 hover:text-[#00F59B] transition-colors"
             >
-              Help
+              FAQ
             </a>
           </nav>
 
