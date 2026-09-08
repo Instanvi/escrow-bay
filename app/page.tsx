@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/home/HeroSection";
 import ProcessSteps from "@/components/home/ProcessSteps";
+import CryptoLiveGraph from "@/components/home/CryptoLiveGraph";
 import FeeCalculator from "@/components/home/FeeCalculator";
 import CategoriesSection from "@/components/home/CategoriesSection";
 import DualProtectionSection from "@/components/home/DualProtectionSection";
@@ -18,6 +19,7 @@ export default function Home() {
       {/* Main Landing Sections */}
       <main className="flex-1">
         <HeroSection />
+        <CryptoLiveGraph />
         <ProcessSteps />
         <FeeCalculator />
         <CategoriesSection />

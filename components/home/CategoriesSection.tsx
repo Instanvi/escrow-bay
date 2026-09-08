@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import {
   Coins,
   Car,
@@ -146,13 +147,13 @@ export default function CategoriesSection() {
                 </div>
 
                 <div className="p-6 pt-0 mt-2">
-                  <a
-                    href="#signup"
+                  <Link
+                    href="/signup"
                     className="w-full flex items-center justify-between text-base font-semibold text-[#00F59B] hover:text-white py-2.5 border-t border-white/10 transition-colors group/btn cursor-pointer"
                   >
                     <span>Start escrow for this category</span>
                     <ArrowRight weight="bold" className="w-5 h-5 transform group-hover/btn:translate-x-1.5 transition-transform" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             );

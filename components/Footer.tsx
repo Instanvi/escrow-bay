@@ -39,9 +39,15 @@ export default function Footer() {
             <a href="#categories" className="hover:text-[#00F59B] transition-colors">
               Categories
             </a>
-            <a href="#protection" className="hover:text-[#00F59B] transition-colors">
-              Protection
+            <a href="#calculator" className="hover:text-[#00F59B] transition-colors">
+              Fee Calculator
             </a>
+            <Link href="/login" className="hover:text-[#00F59B] transition-colors">
+              Log In
+            </Link>
+            <Link href="/signup" className="hover:text-[#00F59B] transition-colors">
+              Sign Up
+            </Link>
             <Link href="/terms" className="hover:text-[#00F59B] transition-colors">
               Terms
             </Link>

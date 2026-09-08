@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import Image from "next/image";
+import { useState } from "react";
+import Link from "next/link";
 import {
   ShieldCheck,
   Lock,
@@ -61,7 +61,7 @@ export default function HeroSection() {
 
   const handleQuickStart = (e: React.FormEvent) => {
     e.preventDefault();
-    window.location.href = "#signup";
+    window.location.href = "/signup";
   };
 
   return (
@@ -114,11 +114,11 @@ export default function HeroSection() {
             {/* Action CTAs */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
               <Button asChild size="lg" className="w-full sm:w-auto h-14 px-7 text-base">
-                <a href="#signup">
+                <Link href="/signup">
                   <Lock weight="bold" className="w-4 h-4 text-[#04100C]" />
                   <span>Start a transaction</span>
                   <ArrowRight weight="bold" className="w-4 h-4 text-[#04100C]" />
-                </a>
+                </Link>
               </Button>
 
               <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto h-14 px-6 text-base">
@@ -153,7 +153,7 @@ export default function HeroSection() {
                 
                 {/* 3 Roles Switcher: Buying | Selling | Brokering */}
                 <div>
-                  <div className="grid grid-cols-3 gap-1.5 p-1.5 bg-[#06090B] rounded-xl border border-white/10">
+                  <div className="grid grid-cols-2 gap-1.5 p-1.5 bg-[#06090B] rounded-xl border border-white/10">
                     <button
                       type="button"
                       onClick={() => setRole("buying")}
@@ -175,17 +175,6 @@ export default function HeroSection() {
                       }`}
                     >
                       Selling
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setRole("brokering")}
-                      className={`py-2.5 text-sm sm:text-base font-semibold rounded-lg transition-all cursor-pointer ${
-                        role === "brokering"
-                          ? "bg-[#00F59B] text-[#04100C] shadow-md font-bold"
-                          : "text-slate-400 hover:text-white"
-                      }`}
-                    >
-                      Brokering
                     </button>
                   </div>
                 </div>

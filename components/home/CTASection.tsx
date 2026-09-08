@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Lock,
   ArrowRight,
@@ -25,11 +26,11 @@ export default function CTASection() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Button asChild size="lg" className="w-full sm:w-auto h-14 px-8 text-base shadow-xl">
-              <a href="#signup">
+              <Link href="/signup">
                 <Lock weight="bold" className="w-4 h-4 text-[#04100C]" />
                 <span>Start an Escrow Transaction</span>
                 <ArrowRight weight="bold" className="w-4 h-4 text-[#04100C]" />
-              </a>
+              </Link>
             </Button>
 
             <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto h-14 px-7 text-base">
