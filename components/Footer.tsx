@@ -124,7 +124,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href="#security" className="hover:text-[#00F59B] transition-colors">
-                  Multi-Sig Cold Storage
+                  Multi-Sig Vault Custody
                 </a>
               </li>
               <li>

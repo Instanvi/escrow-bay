@@ -17,10 +17,10 @@ export default function CategoriesSection() {
     {
       title: "Cryptocurrency & Digital Assets",
       icon: Coins,
-      image: "/crypto.jpg",
+      image: "/crypto-assets.jpg",
       description: "BTC, ETH, SOL, USDT and more, held until both sides confirm the trade on-chain.",
       details: [
-        "Multi-sig cold vault custody",
+        "Multi-sig on-chain vault custody",
         "Instant on-chain verification",
         "Zero chargeback or reversal risk",
       ],
@@ -28,7 +28,7 @@ export default function CategoriesSection() {
     {
       title: "Vehicles & Classic Cars",
       icon: Car,
-      image: "/vehicles.jpg",
+      image: "/classiccars.webp",
       description: "Cars, motorcycles, and boats: payment held until the vehicle title and condition are inspected.",
       details: [
         "Title & documentation verification",
@@ -39,7 +39,7 @@ export default function CategoriesSection() {
     {
       title: "General Merchandise & Electronics",
       icon: Package,
-      image: "/merchandise.jpg",
+      image: "/generalelectronics.jpg",
       description: "Computing hardware, GPU clusters, mobile phones, and equipment shipped anywhere globally.",
       details: [
         "Hardware & GPU server escrow",
@@ -50,7 +50,7 @@ export default function CategoriesSection() {
     {
       title: "Jewelry & Luxury Timepieces",
       icon: Sparkle,
-      image: "/luxury.webp",
+      image: "/jewery.webp",
       description: "High-value luxury watches, diamonds, and collectibles verified before release.",
       details: [
         "Luxury watch & jewelry escrow",

@@ -44,7 +44,7 @@ export default function CTASection() {
               <CheckCircle weight="bold" className="w-4 h-4 text-[#00F59B]" /> No Monthly Commitments
             </span>
             <span className="flex items-center gap-2">
-              <CheckCircle weight="bold" className="w-4 h-4 text-[#00F59B]" /> Multi-Chain Cold Storage
+              <CheckCircle weight="bold" className="w-4 h-4 text-[#00F59B]" /> Multi-Sig Vault Escrow
             </span>
             <span className="flex items-center gap-2">
               <CheckCircle weight="bold" className="w-4 h-4 text-[#00F59B]" /> Impartial Human Arbitration

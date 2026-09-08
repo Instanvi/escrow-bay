@@ -130,8 +130,8 @@ export default function MegaMenu({ activeTab, onClose }: MegaMenuProps) {
       href: "#security",
     },
     {
-      title: "Cold-Storage Segregation",
-      desc: "Air-gapped offline key management with public on-chain verifiable reserves.",
+      title: "Multi-Sig Vault Escrow",
+      desc: "Multi-signature threshold security for crypto and licensed trust accounts for USD.",
       icon: ShieldCheck,
       href: "#security",
     },

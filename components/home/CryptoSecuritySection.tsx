@@ -47,8 +47,8 @@ export default function CryptoSecuritySection() {
       icon: Lock,
     },
     {
-      title: "Cold Storage Segregation",
-      desc: "High-value escrow deposits are routed into offline air-gapped hardware vaults until the inspection approval trigger.",
+      title: "Segregated Vault Architecture",
+      desc: "Escrow funds are held in dedicated multi-sig vaults for crypto and segregated trust accounts for USD, never commingled with operating capital.",
       icon: ShieldCheck,
     },
     {
@@ -73,7 +73,7 @@ export default function CryptoSecuritySection() {
             Supported Crypto Assets & <span className="text-gradient-emerald">Vault Security</span>
           </h2>
           <p className="text-slate-300 text-base leading-relaxed">
-            Deposit and settle in top cryptocurrencies. Protected by institutional-grade multi-sig cold storage and verifiable on-chain ledgers.
+            Deposit and settle in top cryptocurrencies. Protected by institutional-grade multi-sig vaults, segregated trust accounts, and verifiable on-chain ledgers.
           </p>
         </div>
 

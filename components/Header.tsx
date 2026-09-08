@@ -63,7 +63,7 @@ export default function Header() {
       { title: "Multi-Chain Multi-Sig Vaults", href: "#security" },
       { title: "Instant On-Chain Settlement", href: "#security" },
       { title: "API & Webhook Integration", href: "#security" },
-      { title: "Cold-Storage Segregation", href: "#security" },
+      { title: "Segregated Vault Custody", href: "#security" },
     ],
     help: [
       { title: "Live Fee Calculator", href: "#calculator" },

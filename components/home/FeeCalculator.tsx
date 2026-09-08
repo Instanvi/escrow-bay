@@ -5,6 +5,7 @@ import {
   ShieldCheck,
   ArrowRight,
   Lightning,
+  UsersThree,
 } from "@phosphor-icons/react";
 import {
   Select,
@@ -19,15 +20,16 @@ import { Input } from "@/components/ui/input";
 export default function FeeCalculator() {
   const [amount, setAmount] = useState<number>(12500);
   const [crypto, setCrypto] = useState("USDT");
-  const [category, setCategory] = useState("General merchandise");
-  const [split, setSplit] = useState<"buyer" | "split" | "seller">("split");
+  const [category, setCategory] = useState("General merchandise & electronics");
+  const [split, setSplit] = useState<"buyer" | "split" | "seller" | "broker">("split");
+  const [brokerCommissionPct, setBrokerCommissionPct] = useState<number>(5);
 
   const categories = [
-    "Cryptocurrency",
-    "Vehicles",
-    "General merchandise",
-    "Jewelry & luxury goods",
-    "Services & milestones",
+    "General merchandise & electronics",
+    "Cryptocurrency & digital assets",
+    "Vehicles & classic cars",
+    "Jewelry & luxury timepieces",
+    "Services & milestone contracts",
     "Business & brokered deals",
   ];
 
@@ -35,8 +37,24 @@ export default function FeeCalculator() {
 
   const presets = [1000, 5000, 15000, 50000, 100000, 250000];
 
+  const formatAmount = (val: number, asset: string) => {
+    const formatted = val.toLocaleString(undefined, {
+      minimumFractionDigits: asset === "BTC" || asset === "ETH" ? 4 : 2,
+      maximumFractionDigits: asset === "BTC" || asset === "ETH" ? 6 : 2,
+    });
+    return asset === "USD" ? `$${formatted} USD` : `${formatted} ${asset}`;
+  };
+
   // Fee calculation logic
-  const { feeRate, feeTotal, buyerFee, sellerFee, totalBuyerPays, netSellerReceives } = useMemo(() => {
+  const {
+    feeRate,
+    feeTotal,
+    buyerFee,
+    sellerFee,
+    brokerCut,
+    totalBuyerPays,
+    netSellerReceives,
+  } = useMemo(() => {
     let rate = 0.022; // default 2.2%
     if (amount > 100000) {
       rate = 0.0085; // 0.85%
@@ -47,6 +65,7 @@ export default function FeeCalculator() {
     }
 
     const calculatedFee = Math.max(25, amount * rate);
+    const calculatedBrokerCut = split === "broker" ? (amount * brokerCommissionPct) / 100 : 0;
     
     let buyerShare = 0;
     let sellerShare = 0;
@@ -57,6 +76,9 @@ export default function FeeCalculator() {
     } else if (split === "seller") {
       buyerShare = 0;
       sellerShare = calculatedFee;
+    } else if (split === "broker") {
+      buyerShare = calculatedFee / 2;
+      sellerShare = calculatedFee / 2;
     } else {
       buyerShare = calculatedFee / 2;
       sellerShare = calculatedFee / 2;
@@ -67,10 +89,11 @@ export default function FeeCalculator() {
       feeTotal: calculatedFee,
       buyerFee: buyerShare,
       sellerFee: sellerShare,
+      brokerCut: calculatedBrokerCut,
       totalBuyerPays: amount + buyerShare,
-      netSellerReceives: amount - sellerShare,
+      netSellerReceives: amount - sellerShare - calculatedBrokerCut,
     };
-  }, [amount, split]);
+  }, [amount, split, brokerCommissionPct]);
 
   return (
     <section id="calculator" className="py-24 bg-[#07110C] relative border-t border-emerald-500/15">
@@ -82,7 +105,7 @@ export default function FeeCalculator() {
             Live Escrow <span className="text-gradient-emerald">Fee Calculator</span>
           </h2>
           <p className="text-slate-300 text-base leading-relaxed">
-            No hidden costs, monthly subscriptions, or surprise withdrawal fees. Calculate exact costs for any crypto or merchandise transaction.
+            No hidden costs, monthly subscriptions, or surprise withdrawal fees. Calculate exact costs for any crypto, fiat, or merchandise transaction.
           </p>
         </div>
 
@@ -95,7 +118,7 @@ export default function FeeCalculator() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-base font-medium text-slate-200 mb-2">
-                  1. Settlement Currency / Asset
+                  1. Settlement Asset / Currency
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {cryptos.map((c) => (
@@ -105,7 +128,7 @@ export default function FeeCalculator() {
                       onClick={() => setCrypto(c)}
                       className={`py-2.5 text-base font-semibold rounded-lg border transition-all cursor-pointer ${
                         crypto === c
-                          ? "bg-emerald-950/80 border-[#00F59B] text-[#00F59B] shadow-sm"
+                          ? "bg-emerald-950/80 border-[#00F59B] text-[#00F59B] shadow-sm font-bold"
                           : "bg-[#06090B] border-white/10 text-slate-400 hover:text-white"
                       }`}
                     >
@@ -141,22 +164,28 @@ export default function FeeCalculator() {
                   3. Deal Value ({crypto})
                 </label>
                 <span className="text-base text-emerald-400 font-bold">
-                  ${amount.toLocaleString()} {crypto}
+                  {formatAmount(amount, crypto)}
                 </span>
               </div>
 
               <div className="relative mb-4">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-base">
-                  $
-                </span>
+                {crypto === "USD" ? (
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-base font-semibold">
+                    $
+                  </span>
+                ) : (
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+                    {crypto}
+                  </span>
+                )}
                 <Input
                   type="number"
-                  min="50"
-                  max="5000000"
+                  min="1"
+                  max="10000000"
                   step="100"
                   value={amount}
-                  onChange={(e) => setAmount(Math.max(50, Number(e.target.value) || 0))}
-                  className="pl-8 pr-4"
+                  onChange={(e) => setAmount(Math.max(1, Number(e.target.value) || 0))}
+                  className={crypto === "USD" ? "pl-8 pr-4" : "pl-16 pr-4"}
                 />
               </div>
 
@@ -170,7 +199,7 @@ export default function FeeCalculator() {
                     onClick={() => setAmount(p)}
                     className="px-3 py-1.5 rounded-lg bg-[#06090B] hover:bg-white/10 border border-white/10 text-sm font-medium text-slate-300 hover:text-white transition-colors cursor-pointer"
                   >
-                    ${p >= 1000 ? `${p / 1000}k` : p}
+                    {p >= 1000 ? `${p / 1000}k` : p} {crypto}
                   </button>
                 ))}
               </div>
@@ -179,49 +208,95 @@ export default function FeeCalculator() {
             {/* Fee Split Selector */}
             <div>
               <label className="block text-base font-medium text-slate-200 mb-2">
-                4. Who Pays the Escrow Bay Fee?
+                4. Transaction Fee Allocation & Role
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <button
                   type="button"
                   onClick={() => setSplit("buyer")}
-                  className={`p-3.5 rounded-xl border text-center transition-all cursor-pointer ${
+                  className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
                     split === "buyer"
-                      ? "bg-emerald-950/70 border-[#00F59B] text-[#00F59B]"
+                      ? "bg-emerald-950/80 border-[#00F59B] text-[#00F59B]"
                       : "bg-[#06090B] border-white/10 text-slate-400 hover:text-white"
                   }`}
                 >
-                  <div className="text-base font-bold">Buyer Pays</div>
+                  <div className="text-sm font-bold">Buyer Pays</div>
                   <div className="text-xs text-slate-400 mt-0.5">100% of Fee</div>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setSplit("split")}
-                  className={`p-3.5 rounded-xl border text-center transition-all cursor-pointer ${
+                  className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
                     split === "split"
-                      ? "bg-emerald-950/70 border-[#00F59B] text-[#00F59B]"
+                      ? "bg-emerald-950/80 border-[#00F59B] text-[#00F59B]"
                       : "bg-[#06090B] border-white/10 text-slate-400 hover:text-white"
                   }`}
                 >
-                  <div className="text-base font-bold">50 / 50 Split</div>
+                  <div className="text-sm font-bold">50 / 50 Split</div>
                   <div className="text-xs text-slate-400 mt-0.5">Equally Shared</div>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => setSplit("seller")}
-                  className={`p-3.5 rounded-xl border text-center transition-all cursor-pointer ${
+                  className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
                     split === "seller"
-                      ? "bg-emerald-950/70 border-[#00F59B] text-[#00F59B]"
+                      ? "bg-emerald-950/80 border-[#00F59B] text-[#00F59B]"
                       : "bg-[#06090B] border-white/10 text-slate-400 hover:text-white"
                   }`}
                 >
-                  <div className="text-base font-bold">Seller Pays</div>
+                  <div className="text-sm font-bold">Seller Pays</div>
                   <div className="text-xs text-slate-400 mt-0.5">100% of Fee</div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setSplit("broker")}
+                  className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
+                    split === "broker"
+                      ? "bg-emerald-950/80 border-[#00F59B] text-[#00F59B]"
+                      : "bg-[#06090B] border-white/10 text-slate-400 hover:text-white"
+                  }`}
+                >
+                  <div className="text-sm font-bold flex items-center justify-center gap-1">
+                    <UsersThree weight="bold" className="w-3.5 h-3.5" />
+                    <span>Brokered</span>
+                  </div>
+                  <div className="text-xs text-slate-400 mt-0.5">3-Party Deal</div>
                 </button>
               </div>
             </div>
+
+            {/* If Broker Selected, show Commission Slider */}
+            {split === "broker" && (
+              <div className="p-4 rounded-xl bg-[#060E0A] border border-emerald-500/30 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold text-slate-200">
+                    Broker Commission Rate:
+                  </span>
+                  <span className="text-sm font-bold text-[#00F59B]">
+                    {brokerCommissionPct}% ({formatAmount(brokerCut, crypto)})
+                  </span>
+                </div>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {[2.5, 5, 7.5, 10].map((pct) => (
+                    <button
+                      key={pct}
+                      type="button"
+                      onClick={() => setBrokerCommissionPct(pct)}
+                      className={`py-1.5 text-xs font-bold rounded-lg border transition-all cursor-pointer ${
+                        brokerCommissionPct === pct
+                          ? "bg-emerald-950 border-[#00F59B] text-[#00F59B]"
+                          : "bg-[#040806] border-white/10 text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      {pct}%
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
           </div>
 
@@ -241,30 +316,37 @@ export default function FeeCalculator() {
               <div className="flex items-center justify-between text-slate-300">
                 <span>Transaction Value:</span>
                 <span className="text-white font-semibold">
-                  ${amount.toLocaleString()} {crypto}
+                  {formatAmount(amount, crypto)}
                 </span>
               </div>
 
               <div className="flex items-center justify-between text-slate-300">
                 <span>Total Escrow Bay Fee:</span>
                 <span className="text-emerald-400 font-bold">
-                  ${feeTotal.toFixed(2)} {crypto}
+                  {formatAmount(feeTotal, crypto)}
                 </span>
               </div>
 
               <div className="flex items-center justify-between text-slate-400 pl-3 border-l-2 border-white/10 text-sm">
                 <span>Buyer Fee Share:</span>
                 <span className="text-slate-200 font-medium">
-                  ${buyerFee.toFixed(2)}
+                  {formatAmount(buyerFee, crypto)}
                 </span>
               </div>
 
               <div className="flex items-center justify-between text-slate-400 pl-3 border-l-2 border-white/10 text-sm">
                 <span>Seller Fee Share:</span>
                 <span className="text-slate-200 font-medium">
-                  ${sellerFee.toFixed(2)}
+                  {formatAmount(sellerFee, crypto)}
                 </span>
               </div>
+
+              {split === "broker" && (
+                <div className="flex items-center justify-between text-emerald-400 pl-3 border-l-2 border-emerald-500/40 text-sm font-semibold">
+                  <span>Broker Payout Cut:</span>
+                  <span>{formatAmount(brokerCut, crypto)}</span>
+                </div>
+              )}
 
               <div className="pt-3 border-t border-white/10 space-y-3">
                 <div className="p-4 rounded-xl bg-[#06090B] border border-white/10 flex items-center justify-between">
@@ -273,7 +355,7 @@ export default function FeeCalculator() {
                     <div className="text-xs text-slate-500">(Includes buyer fee share)</div>
                   </div>
                   <div className="text-lg font-bold text-white">
-                    ${totalBuyerPays.toFixed(2)} {crypto}
+                    {formatAmount(totalBuyerPays, crypto)}
                   </div>
                 </div>
 
@@ -283,13 +365,13 @@ export default function FeeCalculator() {
                     <div className="text-xs text-slate-400">(Disbursed after inspection)</div>
                   </div>
                   <div className="text-lg font-bold text-[#00F59B]">
-                    ${netSellerReceives.toFixed(2)} {crypto}
+                    {formatAmount(netSellerReceives, crypto)}
                   </div>
                 </div>
               </div>
             </div>
 
-            <Button asChild size="lg" className="w-full h-14 text-base">
+            <Button asChild size="lg" className="w-full h-14 text-base shadow-xl">
               <a href="#signup">
                 <Lightning weight="bold" className="w-4 h-4 text-[#04100C]" />
                 <span>Lock Deal with this Calculation</span>

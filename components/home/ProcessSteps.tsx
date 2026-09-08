@@ -31,7 +31,7 @@ export default function ProcessSteps() {
       num: "02",
       title: "Buyer sends payment to Escrow Bay",
       icon: Wallet,
-      summary: "Funds are held in a secured account: crypto in cold storage, fiat in a licensed trust account.",
+      summary: "Funds are held in a secured account: crypto in multi-sig vault escrow, fiat in a licensed trust account.",
       details: [
         "Direct deposit into multi-sig vault or trust account",
         "Immediate locked collateral confirmation for seller",
@@ -102,7 +102,7 @@ export default function ProcessSteps() {
                 Cryptographically Secured from Agreement to Final Release
               </h3>
               <p className="text-base text-slate-300 leading-relaxed hidden sm:block">
-                Funds remain locked in air-gapped cold storage while goods are shipped and inspected. Both parties remain 100% protected at every milestone.
+                Funds remain locked in multi-sig smart vaults (or licensed trust accounts for USD) while goods are shipped and inspected. Both parties remain 100% protected at every milestone.
               </p>
             </div>
             <div className="flex items-center gap-6 pt-2 text-sm text-slate-300 font-medium">

@@ -31,7 +31,7 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-xl font-bold text-white">2. Multi-Sig Vault Deposits & Collateral</h2>
             <p>
-              When an escrow transaction is created, the Buyer deposits agreed crypto collateral (USDT, USDC, BTC, ETH, or SOL) into Escrow Bay’s designated multi-signature vault address. Funds remain locked in cold storage until:
+              When an escrow transaction is created, the Buyer deposits agreed crypto collateral (USDT, USDC, BTC, ETH, or SOL) into Escrow Bay’s designated multi-signature vault address. Funds remain locked in multi-signature vault custody until:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-slate-300">
               <li>The Buyer submits an explicit deliverable approval; or</li>
