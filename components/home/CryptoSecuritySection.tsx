@@ -97,9 +97,9 @@ export default function CryptoSecuritySection() {
                   </div>
                 </div>
 
-                <h3 className="text-base font-bold text-white mb-1">{coin.name}</h3>
-                <div className="text-sm font-semibold text-emerald-400 mb-2">{coin.chains}</div>
-                <p className="text-sm text-slate-300 leading-relaxed">{coin.desc}</p>
+                <h3 className="text-lg font-bold text-white mb-1">{coin.name}</h3>
+                <div className="text-base font-semibold text-emerald-400 mb-2">{coin.chains}</div>
+                <p className="text-base text-slate-300 leading-relaxed">{coin.desc}</p>
               </div>
             </div>
           ))}
@@ -123,7 +123,7 @@ export default function CryptoSecuritySection() {
                     <Icon weight="bold" className="w-6 h-6" />
                   </div>
                   <h4 className="text-lg font-bold text-white">{p.title}</h4>
-                  <p className="text-sm text-slate-300 leading-relaxed">{p.desc}</p>
+                  <p className="text-base text-slate-300 leading-relaxed">{p.desc}</p>
                 </div>
               );
             })}

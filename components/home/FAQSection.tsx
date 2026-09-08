@@ -10,28 +10,44 @@ import {
 export default function FAQSection() {
   const faqs = [
     {
-      q: "How does the Inspection Period work for physical merchandise?",
-      a: "When creating an escrow deal, both parties agree on an Inspection Period (typically 3 to 14 days). Once the courier tracking confirms delivery, the inspection countdown begins. The buyer inspects the goods. If fully satisfied, the buyer clicks 'Approve' to disburse crypto immediately. If the inspection timer expires without a dispute, funds are disbursed automatically to the seller.",
+      q: "How does Escrow Bay protect both buyers and sellers?",
+      a: "Escrow Bay holds funds in secure multi-signature custody until both parties fulfill their obligations. Buyers are protected because sellers can't access funds until delivery is confirmed and inspected. Sellers are protected because funds are locked upfront—no chargebacks or payment reversals after delivery.",
     },
     {
-      q: "What happens if a seller does not ship or sends incorrect items?",
-      a: "If a seller fails to provide valid shipment tracking within the agreed dispatch window, or if the delivered goods do not match the agreed specifications, the buyer can click 'Open Dispute' within the inspection window. Funds stay 100% frozen in multi-sig custody while our neutral arbitration team investigates. If returned, the buyer receives a full refund of their crypto deposit.",
+      q: "How does the Inspection Period work?",
+      a: "When creating an escrow transaction, both parties agree on an Inspection Period (typically 3-14 days). Once delivery is confirmed, the buyer has this time to inspect the goods or services. If satisfied, they approve the release. If there's an issue, they can open a dispute. If no action is taken, funds automatically release to the seller after the inspection period expires.",
     },
     {
-      q: "Which cryptocurrencies and networks are supported?",
-      a: "Escrow Bay natively supports Tether (USDT on TRC-20, ERC-20, and Solana), USD Coin (USDC), Bitcoin (BTC), Ethereum (ETH), and Solana (SOL). You can fund and settle in whichever asset best suits your deal.",
+      q: "Which cryptocurrencies are supported?",
+      a: "Escrow Bay supports Bitcoin (BTC), Ethereum (ETH), Solana (SOL), Tether (USDT on multiple networks), and USD Coin (USDC). You can fund and settle transactions in whichever cryptocurrency best suits your needs.",
     },
     {
-      q: "Can the buyer and seller split the escrow transaction fee?",
-      a: "Yes. During deal setup, you can configure fee allocation as Buyer Pays 100%, Seller Pays 100%, or 50/50 Equal Split. The exact calculation is displayed transparently upfront with zero hidden charges.",
+      q: "What are the transaction fees?",
+      a: "Escrow Bay charges a transparent service fee based on the transaction amount (typically 1-3%). There are no hidden costs. During setup, you can configure who pays: buyer, seller, or split 50/50. Use our fee calculator to see exact costs before creating a transaction.",
     },
     {
-      q: "Why is Escrow Bay better than direct wallet transfers or credit card payments?",
-      a: "Direct wallet transfers leave buyers completely vulnerable to scams: once sent, crypto cannot be recovered. Conversely, credit cards and PayPal leave sellers vulnerable to fraudulent chargebacks months later. Escrow Bay eliminates both risks: the buyer knows funds won't leave until inspected, and the seller knows 100% of the collateral is locked upfront.",
+      q: "What happens if there's a dispute?",
+      a: "If either party opens a dispute, funds remain frozen in multi-sig custody. Our neutral arbitration team reviews all evidence—tracking numbers, photos, communications, and contract terms. Once a decision is made, funds are released accordingly. Our dispute resolution typically takes 3-7 business days.",
     },
     {
-      q: "How are contractor milestone services managed?",
-      a: "For freelance work, software engineering, or consulting, you can split the deal into staged milestones (e.g. 30% Wireframes, 40% Development, 30% Final Deployment). The buyer funds the full contract upfront, and releases crypto milestone-by-milestone upon deliverable verification.",
+      q: "How do milestone payments work for services?",
+      a: "For freelance work or long-term projects, you can split the contract into milestones (e.g., 30% Design, 40% Development, 30% Launch). The buyer funds the full amount upfront. As each milestone is completed and verified, the corresponding portion is released to the seller.",
+    },
+    {
+      q: "Is my crypto safe in escrow?",
+      a: "Yes. All funds are held in institutional-grade multi-signature wallets requiring multiple approvals for any movement. We never have unilateral control of your assets. Your crypto remains secure until transaction completion or dispute resolution.",
+    },
+    {
+      q: "How long does a typical transaction take?",
+      a: "Transaction timing depends on your agreement. Physical goods typically take 3-14 days (shipping + inspection period). Digital deliverables can be completed in hours or days. Service milestones follow your project timeline. The escrow process itself is instant once both parties fulfill their obligations.",
+    },
+    {
+      q: "Can I cancel a transaction after funding?",
+      a: "Yes, but both parties must agree. If the seller hasn't shipped or started work, cancellation with full refund is straightforward. If work has begun or goods are in transit, cancellation terms depend on your agreement and may require dispute resolution.",
+    },
+    {
+      q: "Do I need an account to use Escrow Bay?",
+      a: "Yes. Both buyers and sellers need to create an account for identity verification and transaction history. Account creation is quick and helps ensure secure, traceable transactions that protect all parties involved.",
     },
   ];
 

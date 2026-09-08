@@ -10,19 +10,16 @@ import {
   Scales,
   Lock,
   Calculator,
-  ArrowRight,
   Clock,
-  Lightning,
   UsersThree,
   BuildingOffice,
-  Code,
   Question,
   FileText,
 } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 
 interface MegaMenuProps {
-  activeTab: "consumer" | "broker" | "business" | "developer" | "help" | null;
+  activeTab: "consumer" | "broker" | "business" | "help" | null;
   onClose: () => void;
 }
 
@@ -107,33 +104,6 @@ export default function MegaMenu({ activeTab, onClose }: MegaMenuProps) {
       desc: "Safe acquisition of software repositories, domains, web platforms, and digital IP rights.",
       icon: Coins,
       href: "#categories",
-    },
-  ];
-
-  const developerItems = [
-    {
-      title: "Multi-Chain Multi-Sig Vaults",
-      desc: "Threshold signature smart contracts across Bitcoin, Ethereum, Solana, and USDT.",
-      icon: Lock,
-      href: "#security",
-    },
-    {
-      title: "Instant On-Chain Settlement",
-      desc: "Sub-second verification and cryptographic proofs with zero chargeback risk.",
-      icon: Lightning,
-      href: "#security",
-    },
-    {
-      title: "API & Webhook Integration",
-      desc: "Programmatically generate escrow deals, track funding, and listen for milestone approvals.",
-      icon: Code,
-      href: "#security",
-    },
-    {
-      title: "Multi-Sig Vault Escrow",
-      desc: "Multi-signature threshold security for crypto and licensed trust accounts for USD.",
-      icon: ShieldCheck,
-      href: "#security",
     },
   ];
 
@@ -271,38 +241,7 @@ export default function MegaMenu({ activeTab, onClose }: MegaMenuProps) {
         </div>
       )}
 
-      {/* 4. Developer Mega Menu */}
-      {activeTab === "developer" && (
-        <div className="w-[700px] p-6 bg-[#0B1013] rounded-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.8)] grid grid-cols-2 gap-4">
-          <div className="col-span-8 grid grid-cols-2 gap-4">
-            {developerItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <a
-                  key={item.title}
-                  href={item.href}
-                  onClick={onClose}
-                  className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-white/5 transition-colors group"
-                >
-                  <div className="p-2.5 rounded-lg bg-emerald-950/80 border border-emerald-500/20 text-[#00F59B] shrink-0 group-hover:scale-105 transition-transform">
-                    <Icon weight="bold" className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-base font-bold text-white group-hover:text-[#00F59B] transition-colors">
-                      {item.title}
-                    </div>
-                    <div className="text-sm text-slate-400 leading-relaxed mt-1">
-                      {item.desc}
-                    </div>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* 5. Help Mega Menu */}
+      {/* 4. Help Mega Menu */}
       {activeTab === "help" && (
         <div className="w-[700px] p-6 bg-[#0B1013] rounded-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.8)] grid grid-cols-2 gap-4">
           {helpItems.map((item) => {
