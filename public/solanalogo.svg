@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" width="720" height="720">
+  <rect width="720" height="720" rx="360" fill="#000"/>
+  <defs>
+    <linearGradient id="sol-grad-1" x1="626" y1="216" x2="153" y2="216" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00FFA3"/>
+      <stop offset="1" stop-color="#DC1FFF"/>
+    </linearGradient>
+    <linearGradient id="sol-grad-2" x1="626" y1="360" x2="153" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00FFA3"/>
+      <stop offset="1" stop-color="#DC1FFF"/>
+    </linearGradient>
+    <linearGradient id="sol-grad-3" x1="626" y1="504" x2="153" y2="504" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00FFA3"/>
+      <stop offset="1" stop-color="#DC1FFF"/>
+    </linearGradient>
+  </defs>
+  <path d="M153.8 259.6c2.4-2.4 5.7-3.8 9.2-3.8h410.8c5.8 0 9.2 6.4 5.9 11.2l-46.7 69.1c-2.4 2.4-5.7 3.8-9.2 3.8H113c-5.8 0-9.2-6.4-5.9-11.2l46.7-69.1z" fill="url(#sol-grad-1)"/>
+  <path d="M153.8 403.6c2.4-2.4 5.7-3.8 9.2-3.8h410.8c5.8 0 9.2 6.4 5.9 11.2l-46.7 69.1c-2.4 2.4-5.7 3.8-9.2 3.8H113c-5.8 0-9.2-6.4-5.9-11.2l46.7-69.1z" fill="url(#sol-grad-2)"/>
+  <path d="M566.2 547.6c-2.4 2.4-5.7 3.8-9.2 3.8H146.2c-5.8 0-9.2-6.4-5.9-11.2l46.7-69.1c2.4-2.4 5.7-3.8 9.2-3.8H607c5.8 0 9.2 6.4 5.9 11.2l-46.7 69.1z" fill="url(#sol-grad-3)"/>
+</svg>
