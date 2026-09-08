@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   Coins,
   Car,
@@ -8,50 +9,81 @@ import {
   Briefcase,
   UsersThree,
   ArrowRight,
+  Check,
 } from "@phosphor-icons/react";
 
 export default function CategoriesSection() {
   const dealTypes = [
     {
-      title: "Cryptocurrency",
+      title: "Cryptocurrency & Digital Assets",
       icon: Coins,
-      description: "BTC, ETH, SOL, USDT and more, held until both sides confirm the trade.",
-      details: ["Multi-sig cold vault custody", "Instant on-chain verification", "Zero chargeback or reversal risk"],
+      image: "/crypto.jpg",
+      description: "BTC, ETH, SOL, USDT and more, held until both sides confirm the trade on-chain.",
+      details: [
+        "Multi-sig cold vault custody",
+        "Instant on-chain verification",
+        "Zero chargeback or reversal risk",
+      ],
     },
     {
-      title: "Vehicles",
+      title: "Vehicles & Classic Cars",
       icon: Car,
-      description: "Cars, motorcycles, boats: payment held until the vehicle is inspected.",
-      details: ["Title and documentation check", "Physical inspection period", "Safe high-ticket vehicle purchase"],
+      image: "/vehicles.jpg",
+      description: "Cars, motorcycles, and boats: payment held until the vehicle title and condition are inspected.",
+      details: [
+        "Title & documentation verification",
+        "Physical inspection test window",
+        "High-ticket safe handover",
+      ],
     },
     {
-      title: "General merchandise",
+      title: "General Merchandise & Electronics",
       icon: Package,
-      description: "Electronics, equipment, and goods of any size, anywhere in the world.",
-      details: ["Hardware & GPU servers", "Industrial machinery & tools", "Verified tracking milestones"],
+      image: "/merchandise.jpg",
+      description: "Computing hardware, GPU clusters, mobile phones, and equipment shipped anywhere globally.",
+      details: [
+        "Hardware & GPU server escrow",
+        "Industrial machinery & tooling",
+        "Courier delivery verification",
+      ],
     },
     {
-      title: "Jewelry & luxury goods",
+      title: "Jewelry & Luxury Timepieces",
       icon: Sparkle,
-      description: "High-value items verified before release, with room for third-party appraisal.",
-      details: ["Luxury timepieces & watches", "Certified diamonds & jewelry", "Third-party appraisal window"],
+      image: "/luxury.webp",
+      description: "High-value luxury watches, diamonds, and collectibles verified before release.",
+      details: [
+        "Luxury watch & jewelry escrow",
+        "Certified diamond authentication",
+        "Third-party appraisal window",
+      ],
     },
     {
-      title: "Services & milestones",
+      title: "Milestone & Freelance Services",
       icon: Briefcase,
-      description: "Freelance and contract work, released in stages as each milestone is met.",
-      details: ["Software engineering contracts", "Design & marketing deliverables", "Staged milestone disbursements"],
+      image: "/services.jpg",
+      description: "Custom software development, design contracts, and consulting released in staged milestones.",
+      details: [
+        "Software engineering retainers",
+        "Design & deliverable verification",
+        "Staged milestone releases",
+      ],
     },
     {
-      title: "Business & brokered deals",
+      title: "Business & Brokered Transactions",
       icon: UsersThree,
-      description: "Third parties can manage a transaction on behalf of either side.",
-      details: ["Commission protection for brokers", "Multi-party deal management", "Automated fee deductions"],
+      image: "/broker.jpg",
+      description: "Intermediaries and brokers manage 3-party transactions with automated commission payouts.",
+      details: [
+        "Commission protection for brokers",
+        "3-party structured agreements",
+        "Automated commission deduction",
+      ],
     },
   ];
 
   return (
-    <section id="categories" className="py-24 bg-[#080C0E] relative border-t border-white/10">
+    <section id="categories" className="py-24 bg-[#05100B] relative border-t border-emerald-500/15">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -60,51 +92,66 @@ export default function CategoriesSection() {
             Built for <span className="text-gradient-emerald">more than one kind of deal</span>
           </h2>
           <p className="text-slate-300 text-base leading-relaxed">
-            Whatever you&apos;re buying or selling, the same protection applies.
+            Whatever you are buying or selling, the same institutional protection applies.
           </p>
         </div>
 
-        {/* 6 Categories Grid */}
+        {/* 6 Category Photo Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {dealTypes.map((cat) => {
             const Icon = cat.icon;
             return (
               <div
                 key={cat.title}
-                className="bg-[#0B1013] rounded-2xl p-7 border border-white/10 flex flex-col justify-between group hover:border-[#00F59B]/40 transition-colors"
+                className="bg-[#091510] rounded-2xl border border-white/10 hover:border-[#00F59B]/40 transition-all duration-300 flex flex-col justify-between overflow-hidden group shadow-xl hover:shadow-[0_10px_30px_rgba(0,245,155,0.08)]"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-500/30 text-[#00F59B] group-hover:scale-110 transition-transform">
-                      <Icon weight="bold" className="w-6 h-6" />
+                  {/* Card Image Header with Gradient Overlay */}
+                  <div className="relative h-44 w-full overflow-hidden bg-[#040A07]">
+                    <Image
+                      src={cat.image}
+                      alt={cat.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-95"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#091510] via-[#091510]/60 to-transparent" />
+                    
+                    {/* Floating Icon Over Image */}
+                    <div className="absolute bottom-3 left-6 p-2.5 rounded-xl bg-[#05100B]/90 backdrop-blur-md border border-emerald-500/30 text-[#00F59B] shadow-lg">
+                      <Icon weight="bold" className="w-5 h-5" />
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-bold text-white mb-2.5 group-hover:text-[#00F59B] transition-colors">
-                    {cat.title}
-                  </h3>
+                  {/* Content Area */}
+                  <div className="p-6 pt-3 space-y-4">
+                    <h3 className="text-xl font-bold text-white group-hover:text-[#00F59B] transition-colors">
+                      {cat.title}
+                    </h3>
 
-                  <p className="text-base text-slate-300 leading-relaxed mb-6">
-                    {cat.description}
-                  </p>
+                    <p className="text-base text-slate-300 leading-relaxed">
+                      {cat.description}
+                    </p>
 
-                  <div className="space-y-2.5 pt-4 border-t border-white/10">
-                    {cat.details.map((item) => (
-                      <div key={item} className="flex items-center gap-2.5 text-base text-slate-300">
-                        <span className="w-2 h-2 rounded-full bg-[#00F59B]" />
-                        <span>{item}</span>
-                      </div>
-                    ))}
+                    <div className="space-y-2 pt-3 border-t border-white/10">
+                      {cat.details.map((item) => (
+                        <div key={item} className="flex items-center gap-2.5 text-base text-slate-300">
+                          <div className="p-1 rounded-md bg-emerald-950/80 text-[#00F59B] shrink-0">
+                            <Check weight="bold" className="w-3.5 h-3.5" />
+                          </div>
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
-                <div className="mt-8 pt-4 border-t border-white/10">
+                <div className="p-6 pt-0 mt-2">
                   <a
                     href="#signup"
-                    className="w-full flex items-center justify-between text-base font-semibold text-[#00F59B] hover:text-white py-1 transition-colors group/btn cursor-pointer"
+                    className="w-full flex items-center justify-between text-base font-semibold text-[#00F59B] hover:text-white py-2.5 border-t border-white/10 transition-colors group/btn cursor-pointer"
                   >
-                    <span>Start escrow for {cat.title}</span>
-                    <ArrowRight weight="bold" className="w-5 h-5 transform group-hover/btn:translate-x-1 transition-transform" />
+                    <span>Start escrow for this category</span>
+                    <ArrowRight weight="bold" className="w-5 h-5 transform group-hover/btn:translate-x-1.5 transition-transform" />
                   </a>
                 </div>
               </div>

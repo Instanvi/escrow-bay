@@ -92,7 +92,6 @@ export default function Header() {
               <span className="text-2xl font-bold tracking-tight text-white">
                 Escrow<span className="text-[#00F59B]">Bay</span>
               </span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00F59B] ml-0.5 animate-pulse" />
             </Link>
 
             {/* Desktop Navigation Tabs */}

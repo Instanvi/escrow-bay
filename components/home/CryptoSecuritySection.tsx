@@ -64,7 +64,7 @@ export default function CryptoSecuritySection() {
   ];
 
   return (
-    <section id="security" className="py-24 bg-[#080C0E] relative border-t border-white/10">
+    <section id="security" className="py-24 bg-[#04080B] relative border-t border-cyan-500/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -82,11 +82,11 @@ export default function CryptoSecuritySection() {
           {supportedCoins.map((coin) => (
             <div
               key={coin.name}
-              className="bg-[#0B1013] rounded-2xl p-6 border border-white/10 flex flex-col justify-between hover:border-[#00F59B]/40 transition-all group"
+              className="bg-[#081017] rounded-2xl p-6 border border-white/10 flex flex-col justify-between hover:border-[#00F59B]/40 hover:bg-[#0C1620] transition-all duration-300 shadow-xl group"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-[#06090B] border border-white/10 p-2.5 flex items-center justify-center group-hover:scale-105 transition-transform">
+                  <div className="w-12 h-12 rounded-xl bg-[#04070A] border border-white/10 p-2.5 flex items-center justify-center group-hover:scale-105 transition-transform shadow-inner">
                     <Image
                       src={coin.file}
                       alt={coin.name}
@@ -106,10 +106,10 @@ export default function CryptoSecuritySection() {
         </div>
 
         {/* Security Architecture Pillars */}
-        <div className="bg-[#0B1013] rounded-3xl p-8 sm:p-12 border border-emerald-500/20">
+        <div className="bg-[#081219] rounded-3xl p-8 sm:p-12 border border-emerald-500/25 shadow-2xl">
           <div className="max-w-2xl mx-auto text-center space-y-2 mb-10">
             <h3 className="text-2xl font-bold text-white">Zero Trust Architecture</h3>
-            <p className="text-sm text-slate-400">
+            <p className="text-base text-slate-300">
               How Escrow Bay secures physical merchandise and contractor funds without counterparty vulnerability.
             </p>
           </div>
@@ -118,7 +118,7 @@ export default function CryptoSecuritySection() {
             {securityPillars.map((p) => {
               const Icon = p.icon;
               return (
-                <div key={p.title} className="p-6 rounded-2xl bg-[#06090B] border border-white/10 space-y-3">
+                <div key={p.title} className="p-6 rounded-2xl bg-[#04080B] border border-white/10 space-y-3 shadow-md hover:border-emerald-500/30 transition-colors">
                   <div className="p-3 rounded-xl bg-emerald-950/80 border border-emerald-500/30 text-[#00F59B] inline-block">
                     <Icon weight="bold" className="w-6 h-6" />
                   </div>

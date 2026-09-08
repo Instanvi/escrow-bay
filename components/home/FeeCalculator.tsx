@@ -73,7 +73,7 @@ export default function FeeCalculator() {
   }, [amount, split]);
 
   return (
-    <section id="calculator" className="py-24 bg-[#06090B] relative border-t border-white/10">
+    <section id="calculator" className="py-24 bg-[#07110C] relative border-t border-emerald-500/15">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -89,7 +89,7 @@ export default function FeeCalculator() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* Controls Form */}
-          <div className="lg:col-span-7 bg-[#0B1013] rounded-2xl p-6 sm:p-8 border border-white/10 space-y-6">
+          <div className="lg:col-span-7 bg-[#0B1A13] rounded-3xl p-6 sm:p-8 border border-white/10 space-y-6 shadow-2xl">
             
             {/* Currency & Category Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -226,7 +226,7 @@ export default function FeeCalculator() {
           </div>
 
           {/* Breakdown Card */}
-          <div className="lg:col-span-5 bg-[#0B1013] rounded-2xl p-6 sm:p-8 border border-emerald-500/30 relative overflow-hidden space-y-6">
+          <div className="lg:col-span-5 bg-[#0A1D15] rounded-3xl p-6 sm:p-8 border border-emerald-500/40 relative overflow-hidden space-y-6 shadow-2xl">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <div className="flex items-center gap-2.5">
                 <ShieldCheck weight="bold" className="w-5 h-5 text-[#00F59B]" />

@@ -36,7 +36,7 @@ export default function FAQSection() {
   ];
 
   return (
-    <section id="faq" className="py-24 bg-[#06090B] relative border-t border-white/10">
+    <section id="faq" className="py-24 bg-[#070C10] relative border-t border-white/10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -55,7 +55,7 @@ export default function FAQSection() {
             <AccordionItem
               key={faq.q}
               value={`item-${idx}`}
-              className="bg-[#0B1013] rounded-2xl border border-white/10 px-6 overflow-hidden transition-colors"
+              className="bg-[#0B141B] rounded-2xl border border-white/10 px-6 overflow-hidden transition-all duration-200 hover:border-emerald-500/30 shadow-lg"
             >
               <AccordionTrigger className="text-base sm:text-lg font-bold text-white hover:text-[#00F59B] py-6">
                 {faq.q}

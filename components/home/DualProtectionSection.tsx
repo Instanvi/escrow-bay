@@ -75,7 +75,7 @@ export default function DualProtectionSection() {
   ];
 
   return (
-    <section id="protection" className="py-24 bg-[#06090B] relative border-t border-white/10">
+    <section id="protection" className="py-24 bg-[#050B10] relative border-t border-cyan-500/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -95,10 +95,10 @@ export default function DualProtectionSection() {
             return (
               <div
                 key={item.title}
-                className="bg-[#0B1013] rounded-2xl p-6 border border-white/10 hover:border-[#00F59B]/40 transition-colors flex flex-col justify-between"
+                className="bg-[#08121A] rounded-2xl p-6 border border-white/10 hover:border-cyan-500/40 transition-all duration-300 flex flex-col justify-between shadow-lg"
               >
                 <div>
-                  <div className="p-3 rounded-xl bg-emerald-950/60 border border-emerald-500/30 text-[#00F59B] w-fit mb-4">
+                  <div className="p-3 rounded-xl bg-cyan-950/60 border border-cyan-500/30 text-cyan-400 w-fit mb-4">
                     <Icon weight="bold" className="w-6 h-6" />
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
@@ -109,21 +109,24 @@ export default function DualProtectionSection() {
           })}
         </div>
 
-        {/* Comparison Grid */}
+        {/* Comparison Grid: Buyer (Emerald) vs Seller (Cyan) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
-          {/* Buyer Column */}
-          <div className="bg-[#0B1013] rounded-2xl p-7 sm:p-9 border border-emerald-500/30 relative overflow-hidden space-y-6">
+          {/* Buyer Column (Emerald Theme) */}
+          <div className="bg-[#071610] rounded-3xl p-7 sm:p-9 border border-emerald-500/40 relative overflow-hidden space-y-6 shadow-2xl">
             <div className="flex items-center gap-3.5 border-b border-white/10 pb-5">
               <div className="p-3 rounded-xl bg-emerald-950 border border-emerald-500/40 text-[#00F59B]">
                 <ShieldCheck weight="bold" className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-bold text-white">Protection for Buyers</h3>
+              <div>
+                <h3 className="text-2xl font-bold text-white">Protection for Buyers</h3>
+                <p className="text-sm text-slate-400">Guaranteed deliverable verification</p>
+              </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               {buyerProtections.map((item) => (
-                <div key={item.title} className="flex items-start gap-4 p-4 rounded-xl bg-[#06090B] border border-white/10">
+                <div key={item.title} className="flex items-start gap-4 p-4 rounded-xl bg-[#040D0A] border border-white/10">
                   <div className="p-1.5 rounded-lg bg-emerald-950/80 text-[#00F59B] shrink-0 mt-0.5">
                     <Check weight="bold" className="w-4 h-4" />
                   </div>
@@ -135,24 +138,27 @@ export default function DualProtectionSection() {
               ))}
             </div>
 
-            <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/20 text-sm text-slate-200 flex items-center gap-3">
+            <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-sm text-slate-200 flex items-center gap-3">
               <Lock weight="bold" className="w-5 h-5 text-[#00F59B] shrink-0" />
               <span>You never pay a single cent to the seller until you hold and approve the merchandise.</span>
             </div>
           </div>
 
-          {/* Seller Column */}
-          <div className="bg-[#0B1013] rounded-2xl p-7 sm:p-9 border border-white/10 relative overflow-hidden space-y-6">
+          {/* Seller Column (Cyan Theme) */}
+          <div className="bg-[#07131B] rounded-3xl p-7 sm:p-9 border border-cyan-500/40 relative overflow-hidden space-y-6 shadow-2xl">
             <div className="flex items-center gap-3.5 border-b border-white/10 pb-5">
               <div className="p-3 rounded-xl bg-cyan-950 border border-cyan-500/40 text-[#38BDF8]">
                 <Lightning weight="bold" className="w-6 h-6" />
               </div>
-              <h3 className="text-2xl font-bold text-white">Protection for Sellers</h3>
+              <div>
+                <h3 className="text-2xl font-bold text-white">Protection for Sellers</h3>
+                <p className="text-sm text-slate-400">100% upfront locked collateral</p>
+              </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               {sellerProtections.map((item) => (
-                <div key={item.title} className="flex items-start gap-4 p-4 rounded-xl bg-[#06090B] border border-white/10">
+                <div key={item.title} className="flex items-start gap-4 p-4 rounded-xl bg-[#040A0F] border border-white/10">
                   <div className="p-1.5 rounded-lg bg-cyan-950/80 text-[#38BDF8] shrink-0 mt-0.5">
                     <Check weight="bold" className="w-4 h-4" />
                   </div>
@@ -164,7 +170,7 @@ export default function DualProtectionSection() {
               ))}
             </div>
 
-            <div className="p-4 rounded-xl bg-cyan-950/30 border border-cyan-500/20 text-sm text-slate-200 flex items-center gap-3">
+            <div className="p-4 rounded-xl bg-cyan-950/40 border border-cyan-500/30 text-sm text-slate-200 flex items-center gap-3">
               <CheckCircle weight="bold" className="w-5 h-5 text-[#38BDF8] shrink-0" />
               <span>Guaranteed payout upon delivery. Fraudulent buyers can never recall or chargeback funds.</span>
             </div>

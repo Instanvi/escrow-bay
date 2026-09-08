@@ -47,7 +47,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-grid-pattern ambient-glow-emerald">
+    <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-[#040907] bg-grid-pattern ambient-glow-emerald">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
@@ -113,7 +113,7 @@ export default function HeroSection() {
 
           {/* Right Column: Quick-Start Escrow Widget */}
           <div className="lg:col-span-5">
-            <div className="bg-[#0B1013] rounded-2xl p-6 sm:p-8 border border-white/10 shadow-2xl relative overflow-hidden">
+            <div className="bg-[#091510] rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl relative overflow-hidden">
               
               <div className="flex items-center gap-3 border-b border-white/10 pb-4 mb-5">
                 <div className="p-2.5 rounded-xl bg-emerald-950/70 border border-emerald-500/30 text-[#00F59B]">

@@ -180,7 +180,7 @@ export default function MegaMenu({ activeTab, onClose }: MegaMenuProps) {
     <div className="absolute top-full left-0 mt-2 z-50 animate-in fade-in zoom-in-95 duration-150">
       {/* 1. Consumer Mega Menu */}
       {activeTab === "consumer" && (
-        <div className="w-[740px] p-6 bg-[#0B1013] rounded-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.8)] grid grid-cols-12 gap-6">
+        <div className="w-[700px] p-6 bg-[#0B1013] rounded-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.8)] grid grid-cols-2 gap-4">
           <div className="col-span-8 grid grid-cols-2 gap-4">
             {consumerItems.map((item) => {
               const Icon = item.icon;
@@ -206,32 +206,12 @@ export default function MegaMenu({ activeTab, onClose }: MegaMenuProps) {
               );
             })}
           </div>
-
-          <div className="col-span-4 p-5 rounded-xl bg-emerald-950/50 border border-emerald-500/30 flex flex-col justify-between space-y-4">
-            <div>
-              <span className="text-sm font-bold uppercase tracking-wider text-[#00F59B]">
-                Safe Handover
-              </span>
-              <h4 className="text-base font-bold text-white mt-1.5">
-                Buyer Inspection Guarantee
-              </h4>
-              <p className="text-sm text-slate-300 mt-1.5 leading-relaxed">
-                Funds stay locked until you test and approve physical goods.
-              </p>
-            </div>
-            <Button asChild className="w-full py-2.5 text-base font-bold rounded-lg">
-              <a href="#how-it-works" onClick={onClose}>
-                <span>Learn How</span>
-                <ArrowRight weight="bold" className="w-4 h-4 text-[#04100C]" />
-              </a>
-            </Button>
-          </div>
         </div>
       )}
 
       {/* 2. Broker Mega Menu */}
       {activeTab === "broker" && (
-        <div className="w-[740px] p-6 bg-[#0B1013] rounded-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.8)] grid grid-cols-12 gap-6">
+        <div className="w-[700px] p-6 bg-[#0B1013] rounded-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.8)] grid grid-cols-2 gap-4">
           <div className="col-span-8 grid grid-cols-2 gap-4">
             {brokerItems.map((item) => {
               const Icon = item.icon;
@@ -257,32 +237,12 @@ export default function MegaMenu({ activeTab, onClose }: MegaMenuProps) {
               );
             })}
           </div>
-
-          <div className="col-span-4 p-5 rounded-xl bg-blue-950/50 border border-blue-500/30 flex flex-col justify-between space-y-4">
-            <div>
-              <span className="text-sm font-bold uppercase tracking-wider text-blue-400">
-                Broker Commission
-              </span>
-              <h4 className="text-base font-bold text-white mt-1.5">
-                Protected Payouts
-              </h4>
-              <p className="text-sm text-slate-300 mt-1.5 leading-relaxed">
-                Your commission is deducted and sent directly to your wallet upon deal closing.
-              </p>
-            </div>
-            <Button asChild variant="secondary" className="w-full py-2.5 text-base font-bold rounded-lg">
-              <a href="#calculator" onClick={onClose}>
-                <span>Calculate Split</span>
-                <ArrowRight weight="bold" className="w-4 h-4" />
-              </a>
-            </Button>
-          </div>
         </div>
       )}
 
       {/* 3. Business Mega Menu */}
       {activeTab === "business" && (
-        <div className="w-[740px] p-6 bg-[#0B1013] rounded-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.8)] grid grid-cols-12 gap-6">
+        <div className="w-[700px] p-6 bg-[#0B1013] rounded-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.8)] grid grid-cols-2 gap-4">
           <div className="col-span-8 grid grid-cols-2 gap-4">
             {businessItems.map((item) => {
               const Icon = item.icon;
@@ -308,32 +268,12 @@ export default function MegaMenu({ activeTab, onClose }: MegaMenuProps) {
               );
             })}
           </div>
-
-          <div className="col-span-4 p-5 rounded-xl bg-amber-950/50 border border-amber-500/30 flex flex-col justify-between space-y-4">
-            <div>
-              <span className="text-sm font-bold uppercase tracking-wider text-amber-400">
-                High Volume
-              </span>
-              <h4 className="text-base font-bold text-white mt-1.5">
-                Enterprise Tier Rates
-              </h4>
-              <p className="text-sm text-slate-300 mt-1.5 leading-relaxed">
-                Transactions over $100k qualify for custom low escrow fee rates starting at 0.85%.
-              </p>
-            </div>
-            <Button asChild variant="secondary" className="w-full py-2.5 text-base font-bold rounded-lg">
-              <a href="#calculator" onClick={onClose}>
-                <span>View Rates</span>
-                <ArrowRight weight="bold" className="w-4 h-4" />
-              </a>
-            </Button>
-          </div>
         </div>
       )}
 
       {/* 4. Developer Mega Menu */}
       {activeTab === "developer" && (
-        <div className="w-[740px] p-6 bg-[#0B1013] rounded-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.8)] grid grid-cols-12 gap-6">
+        <div className="w-[700px] p-6 bg-[#0B1013] rounded-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.8)] grid grid-cols-2 gap-4">
           <div className="col-span-8 grid grid-cols-2 gap-4">
             {developerItems.map((item) => {
               const Icon = item.icon;
@@ -358,26 +298,6 @@ export default function MegaMenu({ activeTab, onClose }: MegaMenuProps) {
                 </a>
               );
             })}
-          </div>
-
-          <div className="col-span-4 p-5 rounded-xl bg-purple-950/50 border border-purple-500/30 flex flex-col justify-between space-y-4">
-            <div>
-              <span className="text-sm font-bold uppercase tracking-wider text-purple-400">
-                Multi-Chain Engine
-              </span>
-              <h4 className="text-base font-bold text-white mt-1.5">
-                Programmable Trust
-              </h4>
-              <p className="text-sm text-slate-300 mt-1.5 leading-relaxed">
-                Multi-sig vault smart contracts for Bitcoin, Ethereum, Solana, and USDT.
-              </p>
-            </div>
-            <Button asChild variant="secondary" className="w-full py-2.5 text-base font-bold rounded-lg">
-              <a href="#security" onClick={onClose}>
-                <span>Security Arch</span>
-                <ArrowRight weight="bold" className="w-4 h-4" />
-              </a>
-            </Button>
           </div>
         </div>
       )}
