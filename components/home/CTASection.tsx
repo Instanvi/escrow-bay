@@ -12,7 +12,7 @@ export default function CTASection() {
       {/* Background glow halos */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-[#00F59B]/15 rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="app-container relative z-10">
         <div className="bg-[#0B1E15]/90 backdrop-blur-xl rounded-3xl p-8 sm:p-14 border border-emerald-500/40 text-center space-y-6 relative overflow-hidden shadow-[0_20px_60px_rgba(0,245,155,0.12)]">
           
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">

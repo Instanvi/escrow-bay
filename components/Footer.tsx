@@ -17,7 +17,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#040709] border-t border-white/10 text-slate-400 pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="app-container">
         
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12">
@@ -82,7 +82,7 @@ export default function Footer() {
               <li><Link href="/contact" className="hover:text-[#00F59B] transition-colors">Contact</Link></li>
               <li><Link href="/terms" className="hover:text-[#00F59B] transition-colors">Terms of Service</Link></li>
               <li><Link href="/privacy" className="hover:text-[#00F59B] transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/support" className="hover:text-[#00F59B] transition-colors">Support</Link></li>
+              <li><Link href="/dispute-rules" className="hover:text-[#00F59B] transition-colors">Dispute Rules</Link></li>
             </ul>
           </div>
 

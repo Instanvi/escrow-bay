@@ -37,6 +37,9 @@ import {
   PaperPlaneTilt,
   Warning,
   X,
+  Table as TableIcon,
+  SquaresFour,
+  Eye,
 } from "@phosphor-icons/react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -49,6 +52,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DealsDataTable } from "@/components/dashboard/deals-data-table";
+import { columns, DealsTableMeta } from "@/components/dashboard/deals-columns";
 
 interface TransactionItem {
   id: string;
@@ -117,6 +122,184 @@ const SAMPLE_TEST_DEALS: EscrowDeal[] = [
         category: "Milestone & Freelance Services",
         price: 18500,
         description: "Deliverable code deployed to staging cluster with benchmark reports.",
+      },
+    ],
+  },
+  {
+    id: "ESC-8905",
+    title: "Rolex Submariner Date 126610LN - Full Set 2025",
+    role: "Buyer",
+    currency: "BTC",
+    inspectionDays: 3,
+    inspectionDaysLeft: 1,
+    totalAmount: 12750,
+    status: "in_inspection",
+    createdAt: "2026-09-10",
+    vaultAddress: "0x9A3F7b894Ec23a91B6F28C4A",
+    trackingNumber: "UPS-7721983456",
+    shippingSubmitted: true,
+    items: [
+      {
+        id: "item-3",
+        name: "Rolex Submariner Date 126610LN with Box & Papers",
+        category: "Jewelry & luxury timepieces",
+        price: 12750,
+        description: "Authentic Rolex with full warranty card, box, papers, and authentication certificate.",
+      },
+    ],
+  },
+  {
+    id: "ESC-8899",
+    title: "Gaming PC Build - RTX 4090 & AMD Ryzen 9",
+    role: "Seller",
+    currency: "USD",
+    inspectionDays: 5,
+    inspectionDaysLeft: 5,
+    totalAmount: 3850,
+    status: "funds_locked",
+    createdAt: "2026-09-11",
+    vaultAddress: "0x4D8Ba29F3E14c89AB2194C7",
+    shippingSubmitted: false,
+    items: [
+      {
+        id: "item-4",
+        name: "Custom Gaming PC - RTX 4090, Ryzen 9 7950X, 64GB RAM",
+        category: "General merchandise & electronics",
+        price: 3850,
+        description: "Fully assembled high-performance gaming PC with stress tests and benchmarks.",
+      },
+    ],
+  },
+  {
+    id: "ESC-8887",
+    title: "2.5 ETH Cryptocurrency Transfer",
+    role: "Broker",
+    currency: "ETH",
+    inspectionDays: 1,
+    inspectionDaysLeft: 1,
+    totalAmount: 5625,
+    status: "funds_locked",
+    createdAt: "2026-09-12",
+    vaultAddress: "0xB7E4A28C93F71D459A8B394",
+    shippingSubmitted: false,
+    items: [
+      {
+        id: "item-5",
+        name: "2.5 ETH Cross-Chain Bridge Settlement",
+        category: "Cryptocurrency & digital assets",
+        price: 5625,
+        description: "Escrow for ETH bridge transfer with multi-sig validation required.",
+      },
+    ],
+  },
+  {
+    id: "ESC-8876",
+    title: "MacBook Pro 16 M3 Max - Sealed 2026 Model",
+    role: "Buyer",
+    currency: "USDC",
+    inspectionDays: 4,
+    inspectionDaysLeft: 2,
+    totalAmount: 4299,
+    status: "in_inspection",
+    createdAt: "2026-09-08",
+    vaultAddress: "0x5C29D8A4E71F23B89D4C7A1",
+    trackingNumber: "FEDEX-894712036",
+    shippingSubmitted: true,
+    items: [
+      {
+        id: "item-6",
+        name: "Apple MacBook Pro 16-inch M3 Max 128GB 4TB",
+        category: "General merchandise & electronics",
+        price: 4299,
+        description: "Factory sealed, never opened. Full Apple warranty and receipt included.",
+      },
+    ],
+  },
+  {
+    id: "ESC-8864",
+    title: "Business Acquisition - Local Coffee Shop Transfer",
+    role: "Seller",
+    currency: "USD",
+    inspectionDays: 14,
+    inspectionDaysLeft: 14,
+    totalAmount: 48000,
+    status: "funds_locked",
+    createdAt: "2026-09-13",
+    vaultAddress: "0x8F14C7A29B3E51D84A9C2F7",
+    shippingSubmitted: false,
+    items: [
+      {
+        id: "item-7",
+        name: "\"Brew Haven\" Coffee Shop - Assets & Lease Transfer",
+        category: "Business & brokered deals",
+        price: 48000,
+        description: "Complete business transfer including equipment, inventory, lease, and training.",
+      },
+    ],
+  },
+  {
+    id: "ESC-8851",
+    title: "Vintage Tiffany & Co. Diamond Ring - 1.8ct",
+    role: "Buyer",
+    currency: "USDT",
+    inspectionDays: 3,
+    totalAmount: 15200,
+    status: "completed",
+    createdAt: "2026-08-28",
+    vaultAddress: "0x3A8D9E71C4F29B5A6D8E4C2",
+    trackingNumber: "DHL-9847123567",
+    shippingSubmitted: true,
+    items: [
+      {
+        id: "item-8",
+        name: "Tiffany & Co. Platinum Diamond Engagement Ring 1.8ct",
+        category: "Jewelry & luxury timepieces",
+        price: 15200,
+        description: "GIA certified diamond, original Tiffany certificate, appraisal included.",
+      },
+    ],
+  },
+  {
+    id: "ESC-8842",
+    title: "Freelance Mobile App Development - Full Stack",
+    role: "Seller",
+    currency: "USDC",
+    inspectionDays: 10,
+    totalAmount: 8900,
+    status: "completed",
+    createdAt: "2026-08-15",
+    vaultAddress: "0x7B5E4D92A8C13F67B9A4E31",
+    shippingSubmitted: true,
+    items: [
+      {
+        id: "item-9",
+        name: "React Native Mobile App - iOS & Android Deployment",
+        category: "Milestone & freelance services",
+        price: 8900,
+        description: "Complete mobile app with backend API, authentication, and payment integration.",
+      },
+    ],
+  },
+  {
+    id: "ESC-8833",
+    title: "Rare Hermès Birkin 25 Handbag - Rose Sakura",
+    role: "Buyer",
+    currency: "BTC",
+    inspectionDays: 5,
+    inspectionDaysLeft: 2,
+    totalAmount: 32500,
+    status: "dispute",
+    createdAt: "2026-09-05",
+    vaultAddress: "0x2D6C9A8E4F17B35D8A9C4E7",
+    trackingNumber: "FX-883749201",
+    shippingSubmitted: true,
+    items: [
+      {
+        id: "item-10",
+        name: "Hermès Birkin 25 Rose Sakura Epsom Leather",
+        category: "Jewelry & luxury timepieces",
+        price: 32500,
+        description: "Authentic Hermès with original receipt, dust bag, box, and authentication.",
       },
     ],
   },
@@ -190,6 +373,8 @@ export default function DashboardPage() {
   const [trackingInputDealId, setTrackingInputDealId] = useState<string | null>(null);
   const [trackingNumberText, setTrackingNumberText] = useState("");
   const [successToast, setSuccessToast] = useState("");
+  const [viewMode, setViewMode] = useState<"auto" | "table" | "cards">("auto");
+  const [selectedViewDeal, setSelectedViewDeal] = useState<EscrowDeal | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -366,26 +551,80 @@ export default function DashboardPage() {
       {
         id: "notif-1",
         type: "action" as const,
-        title: "Inspection Window Expiring",
-        message: "ESC-8921 (Porsche 911) inspection ends in 3 days. Approve or dispute soon.",
-        dealId: "ESC-8921",
-        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        title: "Urgent: Inspection Window Expiring Soon",
+        message: "ESC-8905 (Rolex Submariner) inspection ends in 1 day! Review and approve or dispute.",
+        dealId: "ESC-8905",
+        timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
         read: false,
       },
       {
         id: "notif-2",
+        type: "action" as const,
+        title: "Inspection Window Active",
+        message: "ESC-8921 (Porsche 911) inspection ends in 3 days. Approve or dispute soon.",
+        dealId: "ESC-8921",
+        timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+        read: false,
+      },
+      {
+        id: "notif-3",
+        type: "warning" as const,
+        title: "Dispute Under Arbitration",
+        message: "ESC-8833 (Hermès Birkin) dispute filed. Arbitrator reviewing evidence from both parties.",
+        dealId: "ESC-8833",
+        timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+        read: false,
+      },
+      {
+        id: "notif-4",
+        type: "info" as const,
+        title: "Shipment In Transit",
+        message: "ESC-8876 (MacBook Pro) tracking updated. Package in inspection window (2 days left).",
+        dealId: "ESC-8876",
+        timestamp: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
+        read: false,
+      },
+      {
+        id: "notif-5",
         type: "info" as const,
         title: "Funds Secured",
-        message: "ESC-8914 collateral locked in multi-sig vault. Awaiting shipment.",
+        message: "ESC-8914 (GPU Cluster Milestone) collateral locked in multi-sig vault. Awaiting deliverable.",
         dealId: "ESC-8914",
-        timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+        timestamp: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
+        read: false,
+      },
+      {
+        id: "notif-6",
+        type: "success" as const,
+        title: "Transaction Completed",
+        message: "ESC-8851 (Tiffany Diamond Ring) successfully completed. Funds released to seller.",
+        dealId: "ESC-8851",
+        timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+        read: true,
+      },
+      {
+        id: "notif-7",
+        type: "success" as const,
+        title: "Transaction Completed",
+        message: "ESC-8842 (Mobile App Development) successfully completed. Payment disbursed.",
+        dealId: "ESC-8842",
+        timestamp: new Date(Date.now() - 72 * 60 * 60 * 1000).toISOString(),
+        read: true,
+      },
+      {
+        id: "notif-8",
+        type: "info" as const,
+        title: "New Deal Created",
+        message: "ESC-8887 (2.5 ETH Transfer) created. Awaiting broker confirmation.",
+        dealId: "ESC-8887",
+        timestamp: new Date(Date.now() - 10 * 60 * 60 * 1000).toISOString(),
         read: false,
       },
     ];
     
     setNotifications(sampleNotifications);
-    setUnreadCount(2);
-    setSuccessToast("Sample test scenario loaded with 2 active transactions!");
+    setUnreadCount(6);
+    setSuccessToast("Sample test scenario loaded with 10 diverse escrow transactions!");
     setTimeout(() => setSuccessToast(""), 3500);
   };
 
@@ -410,6 +649,20 @@ export default function DashboardPage() {
     if (dealFilter === "all") return true;
     return d.status === dealFilter;
   });
+
+  const tableMeta: DealsTableMeta = {
+    onViewDeal: (deal) => setSelectedViewDeal(deal),
+    onMessage: (deal) => setSelectedChatDeal(deal),
+    onApproveDeal: (deal) => setSelectedDealToApprove(deal),
+    onSubmitTracking: (deal) => {
+      setTrackingInputDealId(deal.id);
+      setTrackingNumberText("");
+    },
+    onDispute: (deal) => setDisputeDeal(deal),
+    messageCounts: Object.fromEntries(
+      Object.entries(messages).map(([dealId, msgs]) => [dealId, msgs.length])
+    ),
+  };
 
   const totalVaultValue = deals.reduce((acc, curr) => acc + curr.totalAmount, 0);
 
@@ -477,7 +730,7 @@ export default function DashboardPage() {
       <Header />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-36 pb-24 relative z-10 space-y-8">
+      <main className="flex-1 app-container-dashboard pt-32 sm:pt-36 pb-24 relative z-10 space-y-8">
         
         {/* Success Toast */}
         {successToast && (
@@ -1425,9 +1678,9 @@ export default function DashboardPage() {
               </div>
             ) : (
               <>
-                {/* Filter Tabs Bar */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div>
+                {/* Filter & View Mode Controls Bar */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
                     <h2 className="text-xl font-bold text-white flex items-center gap-2">
                       <span>Active Agreements</span>
                       <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-[#00F59B]">
@@ -1436,288 +1689,369 @@ export default function DashboardPage() {
                     </h2>
                   </div>
 
-                  <div className="flex items-center gap-1.5 p-1 bg-[#091510] rounded-xl border border-white/10 self-start sm:self-auto">
-                    <button
-                      type="button"
-                      onClick={() => setDealFilter("all")}
-                      className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-                        dealFilter === "all" ? "bg-[#00F59B] text-[#04100C] font-bold" : "text-slate-400 hover:text-white"
-                      }`}
-                    >
-                      All
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setDealFilter("funds_locked")}
-                      className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-                        dealFilter === "funds_locked" ? "bg-[#00F59B] text-[#04100C] font-bold" : "text-slate-400 hover:text-white"
-                      }`}
-                    >
-                      Funds Locked
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setDealFilter("in_inspection")}
-                      className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-                        dealFilter === "in_inspection" ? "bg-[#00F59B] text-[#04100C] font-bold" : "text-slate-400 hover:text-white"
-                      }`}
-                    >
-                      In Inspection
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setDealFilter("dispute")}
-                      className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-                        dealFilter === "dispute" ? "bg-[#00F59B] text-[#04100C] font-bold" : "text-slate-400 hover:text-white"
-                      }`}
-                    >
-                      Disputes
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setDealFilter("completed")}
-                      className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-                        dealFilter === "completed" ? "bg-[#00F59B] text-[#04100C] font-bold" : "text-slate-400 hover:text-white"
-                      }`}
-                    >
-                      Completed
-                    </button>
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    {/* Status Filter Buttons */}
+                    <div className="flex items-center gap-1 p-1 bg-[#091510] rounded-xl border border-white/10 overflow-x-auto">
+                      <button
+                        type="button"
+                        onClick={() => setDealFilter("all")}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer whitespace-nowrap ${
+                          dealFilter === "all" ? "bg-[#00F59B] text-[#04100C] font-bold" : "text-slate-400 hover:text-white"
+                        }`}
+                      >
+                        All ({deals.length})
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDealFilter("funds_locked")}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer whitespace-nowrap ${
+                          dealFilter === "funds_locked" ? "bg-[#00F59B] text-[#04100C] font-bold" : "text-slate-400 hover:text-white"
+                        }`}
+                      >
+                        Funds Locked ({deals.filter((d) => d.status === "funds_locked").length})
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDealFilter("in_inspection")}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer whitespace-nowrap ${
+                          dealFilter === "in_inspection" ? "bg-[#00F59B] text-[#04100C] font-bold" : "text-slate-400 hover:text-white"
+                        }`}
+                      >
+                        In Inspection ({deals.filter((d) => d.status === "in_inspection").length})
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDealFilter("dispute")}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer whitespace-nowrap ${
+                          dealFilter === "dispute" ? "bg-[#00F59B] text-[#04100C] font-bold" : "text-slate-400 hover:text-white"
+                        }`}
+                      >
+                        Disputes ({deals.filter((d) => d.status === "dispute").length})
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDealFilter("completed")}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer whitespace-nowrap ${
+                          dealFilter === "completed" ? "bg-[#00F59B] text-[#04100C] font-bold" : "text-slate-400 hover:text-white"
+                        }`}
+                      >
+                        Completed ({deals.filter((d) => d.status === "completed").length})
+                      </button>
+                    </div>
+
+                    {/* View Mode Toggle (Desktop only) */}
+                    <div className="hidden lg:flex items-center gap-1 p-1 bg-[#091510] rounded-xl border border-white/10">
+                      <button
+                        type="button"
+                        onClick={() => setViewMode("table")}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
+                          viewMode === "table" || viewMode === "auto"
+                            ? "bg-[#00F59B] text-[#04100C] font-bold shadow-sm"
+                            : "text-slate-400 hover:text-white"
+                        }`}
+                        title="Table View (Desktop Recommended)"
+                      >
+                        <TableIcon weight="bold" className="w-3.5 h-3.5" />
+                        <span>Table View</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setViewMode("cards")}
+                        className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center gap-1.5 ${
+                          viewMode === "cards"
+                            ? "bg-[#00F59B] text-[#04100C] font-bold shadow-sm"
+                            : "text-slate-400 hover:text-white"
+                        }`}
+                        title="Card View"
+                      >
+                        <SquaresFour weight="bold" className="w-3.5 h-3.5" />
+                        <span>Card View</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                {/* Deals Cards */}
-                <div className="space-y-4">
-                  {filteredDeals.map((deal) => (
-                    <div
-                      key={deal.id}
-                      className="bg-[#091510] rounded-2xl p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300 shadow-xl space-y-5"
-                    >
-                      {/* Top Deal Header */}
-                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-white/10">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-3">
-                            <span className="text-xs font-mono text-[#00F59B] bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/30">
-                              {deal.id}
-                            </span>
-                            <h3 className="text-lg font-bold text-white">{deal.title}</h3>
-                            <span className="text-xs font-semibold px-2 py-0.5 rounded bg-white/10 text-slate-300">
-                              {deal.role}
-                            </span>
-                          </div>
-                          <div className="text-xs text-slate-400 flex items-center gap-4 pt-1">
-                            <span>Created: {deal.createdAt}</span>
-                            <span>•</span>
-                            <span className="flex items-center gap-1 font-mono">
-                              Vault: {deal.vaultAddress}
-                              <button
-                                type="button"
-                                onClick={() => handleCopy(deal.vaultAddress, deal.id)}
-                                className="hover:text-[#00F59B] transition-colors ml-1 cursor-pointer"
-                              >
-                                {copiedId === deal.id ? <Check weight="bold" className="w-3.5 h-3.5 text-[#00F59B]" /> : <Copy weight="bold" className="w-3.5 h-3.5" />}
-                              </button>
-                            </span>
-                          </div>
-                        </div>
+                {/* 1. Desktop DataTable View (Shown on Desktop when Table mode or Auto mode is active) */}
+                {(viewMode === "table" || viewMode === "auto") && (
+                  <div className="hidden lg:block animate-fade-in">
+                    <DealsDataTable
+                      columns={columns}
+                      data={filteredDeals}
+                      meta={tableMeta}
+                    />
+                  </div>
+                )}
 
-                        <div className="flex items-center gap-4 self-start lg:self-auto">
-                          <div className="text-right">
-                            <div className="text-xs text-slate-400">Escrow Value</div>
-                            <div className="text-xl font-bold text-white">
-                              {formatAmount(deal.totalAmount, deal.currency)}
-                            </div>
-                          </div>
-
-                          <div>
-                            {deal.status === "in_inspection" && (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-950/80 border border-amber-500/40 text-amber-300 text-xs font-bold">
-                                <Clock weight="bold" className="w-4 h-4" />
-                                <span>Inspection Window (Day {deal.inspectionDaysLeft} of {deal.inspectionDays})</span>
-                              </span>
-                            )}
-                            {deal.status === "funds_locked" && (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 text-xs font-bold">
-                                <ShieldCheck weight="bold" className="w-4 h-4" />
-                                <span>Locked in Multi-Sig</span>
-                              </span>
-                            )}
-                            {deal.status === "completed" && (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-[#00F59B] text-xs font-bold">
-                                <CheckCircle weight="bold" className="w-4 h-4" />
-                                <span>Completed & Released</span>
-                              </span>
-                            )}
-                            {deal.status === "dispute" && (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-950/80 border border-red-500/40 text-red-300 text-xs font-bold">
-                                <Warning weight="bold" className="w-4 h-4" />
-                                <span>In Dispute / Arbitration</span>
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Progressive Milestone Tracker Bar */}
-                      <div className="p-4 rounded-xl bg-[#040806] border border-white/5 space-y-3">
-                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                          Escrow Checkpoint Lifecycle
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs">
-                          
-                          <div className="flex items-center gap-2 text-emerald-400">
-                            <CheckCircle weight="fill" className="w-4 h-4 shrink-0" />
-                            <span>1. Collateral Locked</span>
-                          </div>
-
-                          <div className={`flex items-center gap-2 ${
-                            deal.shippingSubmitted || deal.status === "in_inspection" || deal.status === "completed"
-                              ? "text-emerald-400"
-                              : "text-slate-500"
-                          }`}>
-                            <CheckCircle weight={deal.shippingSubmitted || deal.status === "completed" ? "fill" : "bold"} className="w-4 h-4 shrink-0" />
-                            <span>2. Shipment / Tracking</span>
-                          </div>
-
-                          <div className={`flex items-center gap-2 ${
-                            deal.status === "in_inspection"
-                              ? "text-amber-400 font-bold"
-                              : deal.status === "completed"
-                              ? "text-emerald-400"
-                              : "text-slate-500"
-                          }`}>
-                            <Clock weight="bold" className="w-4 h-4 shrink-0" />
-                            <span>3. Inspection Window</span>
-                          </div>
-
-                          <div className={`flex items-center gap-2 ${
-                            deal.status === "completed" ? "text-[#00F59B] font-bold" : "text-slate-500"
-                          }`}>
-                            <CheckCircle weight={deal.status === "completed" ? "fill" : "bold"} className="w-4 h-4 shrink-0" />
-                            <span>4. Payout Disbursed</span>
-                          </div>
-
-                        </div>
-                      </div>
-
-                      {/* Inline Logistics & Submit Tracking input if waiting for shipment */}
-                      {trackingInputDealId === deal.id && (
-                        <div className="p-4 rounded-xl bg-[#05110B] border border-[#00F59B]/40 space-y-3 animate-fade-in">
-                          <label className="block text-xs font-semibold text-slate-200">
-                            Enter Courier Tracking Number / Milestone Proof
-                          </label>
-                          <div className="flex gap-2">
-                            <Input
-                              type="text"
-                              value={trackingNumberText}
-                              onChange={(e) => setTrackingNumberText(e.target.value)}
-                              placeholder="e.g. FedEx #FX-904128419 or deliverable link"
-                              className="bg-[#040806] text-xs h-10"
-                            />
-                            <Button
-                              size="sm"
-                              onClick={() => handleSubmitShipping(deal.id)}
-                              className="h-10 px-4 text-xs font-bold cursor-pointer"
-                            >
-                              Submit
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => setTrackingInputDealId(null)}
-                              className="h-10 px-3 text-xs cursor-pointer"
-                            >
-                              Cancel
-                            </Button>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Actions Row */}
-                      <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-white/5">
-                        <div className="flex items-center gap-2 text-xs text-slate-400">
-                          {deal.trackingNumber && (
-                            <span className="flex items-center gap-1.5 text-emerald-400 font-mono">
-                              <Truck weight="bold" className="w-4 h-4" /> Tracking: {deal.trackingNumber}
-                            </span>
-                          )}
-                        </div>
-
-                        <div className="flex items-center gap-2 flex-wrap">
-                          
-                          {/* Message/Chat Button */}
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setSelectedChatDeal(deal)}
-                            className="text-xs h-9 px-3 text-slate-300 hover:text-white cursor-pointer relative"
-                          >
-                            <ChatCircle weight="bold" className="w-4 h-4 mr-1.5" />
-                            <span>Message</span>
-                            {messages[deal.id] && messages[deal.id].length > 0 && (
-                              <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#00F59B] text-[#04100C] text-xs font-bold flex items-center justify-center">
-                                {messages[deal.id].length}
-                              </span>
-                            )}
-                          </Button>
-                          
-                          {/* Dispute Button (visible during inspection or funds_locked, not when already in dispute) */}
-                          {(deal.status === "in_inspection" || deal.status === "funds_locked") && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => setDisputeDeal(deal)}
-                              className="text-xs h-9 px-3 text-red-400 hover:text-red-300 cursor-pointer"
-                            >
-                              <Warning weight="bold" className="w-4 h-4 mr-1.5" />
-                              <span>Raise Dispute</span>
-                            </Button>
-                          )}
-                          
-                          {/* Show Dispute Status Info if already in dispute */}
-                          {deal.status === "dispute" && (
-                            <div className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-red-950/50 border border-red-500/30 text-xs text-red-300">
-                              <Scales weight="bold" className="w-4 h-4" />
-                              <span>Arbitrator reviewing evidence</span>
-                            </div>
-                          )}
-
-                          {deal.status === "in_inspection" && deal.role === "Buyer" && (
-                            <Button
-                              size="sm"
-                              onClick={() => setSelectedDealToApprove(deal)}
-                              className="bg-[#00F59B] text-[#04100C] font-bold text-xs h-9 px-4 rounded-lg hover:bg-[#33F7AC] cursor-pointer"
-                            >
-                              <CheckCircle weight="bold" className="w-4 h-4 mr-1.5" />
-                              <span>Approve & Release Payment</span>
-                            </Button>
-                          )}
-
-                          {deal.status === "funds_locked" && (
-                            <Button
-                              variant="secondary"
-                              size="sm"
-                              onClick={() => {
-                                setTrackingInputDealId(deal.id);
-                                setTrackingNumberText("");
-                              }}
-                              className="text-xs h-9 px-4 rounded-lg font-semibold cursor-pointer"
-                            >
-                              <Truck weight="bold" className="w-4 h-4 mr-1.5" />
-                              <span>{deal.role === "Seller" ? "Upload Tracking / Deliverable" : "Mark Shipped"}</span>
-                            </Button>
-                          )}
-
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-xs text-slate-300 hover:text-white h-9 px-3 cursor-pointer"
-                          >
-                            <span>Download Agreement PDF</span>
-                          </Button>
-                        </div>
-                      </div>
+                {/* 2. Mobile Cards View (Shown on Mobile always, or on Desktop if Cards mode is toggled) */}
+                <div
+                  className={`space-y-4 animate-fade-in ${
+                    viewMode === "cards" ? "block" : "block lg:hidden"
+                  }`}
+                >
+                  {filteredDeals.length === 0 ? (
+                    <div className="bg-[#091510] rounded-2xl p-8 border border-white/10 text-center text-slate-400 space-y-2">
+                      <p className="text-sm font-semibold text-white">No deals match the selected filter.</p>
+                      <button
+                        type="button"
+                        onClick={() => setDealFilter("all")}
+                        className="text-xs text-[#00F59B] hover:underline cursor-pointer"
+                      >
+                        Reset filter to view all deals
+                      </button>
                     </div>
-                  ))}
+                  ) : (
+                    filteredDeals.map((deal) => (
+                      <div
+                        key={deal.id}
+                        className="bg-[#091510] rounded-2xl p-5 sm:p-6 border border-white/10 hover:border-emerald-500/40 transition-all duration-300 shadow-xl space-y-5"
+                      >
+                        {/* Top Deal Header */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2.5 flex-wrap">
+                              <span className="text-xs font-mono text-[#00F59B] bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-500/30 font-bold">
+                                {deal.id}
+                              </span>
+                              <h3
+                                onClick={() => setSelectedViewDeal(deal)}
+                                className="text-base sm:text-lg font-bold text-white hover:text-[#00F59B] transition-colors cursor-pointer"
+                              >
+                                {deal.title}
+                              </h3>
+                              <span className="text-xs font-semibold px-2 py-0.5 rounded bg-white/10 text-slate-300">
+                                {deal.role}
+                              </span>
+                            </div>
+                            <div className="text-xs text-slate-400 flex items-center gap-3 pt-1 flex-wrap">
+                              <span>Created: {deal.createdAt}</span>
+                              <span>•</span>
+                              <span className="flex items-center gap-1 font-mono">
+                                Vault: {deal.vaultAddress.slice(0, 10)}...
+                                <button
+                                  type="button"
+                                  onClick={() => handleCopy(deal.vaultAddress, deal.id)}
+                                  className="hover:text-[#00F59B] transition-colors ml-1 cursor-pointer"
+                                >
+                                  {copiedId === deal.id ? (
+                                    <Check weight="bold" className="w-3.5 h-3.5 text-[#00F59B]" />
+                                  ) : (
+                                    <Copy weight="bold" className="w-3.5 h-3.5" />
+                                  )}
+                                </button>
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-3 self-start sm:self-auto">
+                            <div className="text-left sm:text-right">
+                              <div className="text-xs text-slate-400">Escrow Value</div>
+                              <div className="text-lg sm:text-xl font-bold text-white">
+                                {formatAmount(deal.totalAmount, deal.currency)}
+                              </div>
+                            </div>
+
+                            <div>
+                              {deal.status === "in_inspection" && (
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-amber-950/80 border border-amber-500/40 text-amber-300 text-xs font-bold">
+                                  <Clock weight="bold" className="w-3.5 h-3.5" />
+                                  <span>Day {deal.inspectionDaysLeft} of {deal.inspectionDays}</span>
+                                </span>
+                              )}
+                              {deal.status === "funds_locked" && (
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 text-xs font-bold">
+                                  <ShieldCheck weight="bold" className="w-3.5 h-3.5" />
+                                  <span>Funds Locked</span>
+                                </span>
+                              )}
+                              {deal.status === "completed" && (
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-[#00F59B] text-xs font-bold">
+                                  <CheckCircle weight="bold" className="w-3.5 h-3.5" />
+                                  <span>Completed</span>
+                                </span>
+                              )}
+                              {deal.status === "dispute" && (
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-red-950/80 border border-red-500/40 text-red-300 text-xs font-bold">
+                                  <Warning weight="bold" className="w-3.5 h-3.5" />
+                                  <span>In Dispute</span>
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Progressive Milestone Tracker Bar */}
+                        <div className="p-3.5 sm:p-4 rounded-xl bg-[#040806] border border-white/5 space-y-2.5">
+                          <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                            Escrow Checkpoint Lifecycle
+                          </div>
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                            <div className="flex items-center gap-2 text-emerald-400">
+                              <CheckCircle weight="fill" className="w-4 h-4 shrink-0" />
+                              <span>1. Locked</span>
+                            </div>
+
+                            <div
+                              className={`flex items-center gap-2 ${
+                                deal.shippingSubmitted || deal.status === "in_inspection" || deal.status === "completed"
+                                  ? "text-emerald-400"
+                                  : "text-slate-500"
+                              }`}
+                            >
+                              <CheckCircle
+                                weight={deal.shippingSubmitted || deal.status === "completed" ? "fill" : "bold"}
+                                className="w-4 h-4 shrink-0"
+                              />
+                              <span>2. Shipped</span>
+                            </div>
+
+                            <div
+                              className={`flex items-center gap-2 ${
+                                deal.status === "in_inspection"
+                                  ? "text-amber-400 font-bold"
+                                  : deal.status === "completed"
+                                  ? "text-emerald-400"
+                                  : "text-slate-500"
+                              }`}
+                            >
+                              <Clock weight="bold" className="w-4 h-4 shrink-0" />
+                              <span>3. Inspection</span>
+                            </div>
+
+                            <div
+                              className={`flex items-center gap-2 ${
+                                deal.status === "completed" ? "text-[#00F59B] font-bold" : "text-slate-500"
+                              }`}
+                            >
+                              <CheckCircle
+                                weight={deal.status === "completed" ? "fill" : "bold"}
+                                className="w-4 h-4 shrink-0"
+                              />
+                              <span>4. Released</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Inline Logistics & Submit Tracking input if waiting for shipment */}
+                        {trackingInputDealId === deal.id && (
+                          <div className="p-4 rounded-xl bg-[#05110B] border border-[#00F59B]/40 space-y-3 animate-fade-in">
+                            <label className="block text-xs font-semibold text-slate-200">
+                              Enter Courier Tracking Number / Milestone Proof
+                            </label>
+                            <div className="flex gap-2">
+                              <Input
+                                type="text"
+                                value={trackingNumberText}
+                                onChange={(e) => setTrackingNumberText(e.target.value)}
+                                placeholder="e.g. FedEx #FX-904128419 or deliverable link"
+                                className="bg-[#040806] text-xs h-10"
+                              />
+                              <Button
+                                size="sm"
+                                onClick={() => handleSubmitShipping(deal.id)}
+                                className="h-10 px-4 text-xs font-bold cursor-pointer"
+                              >
+                                Submit
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setTrackingInputDealId(null)}
+                                className="h-10 px-3 text-xs cursor-pointer"
+                              >
+                                Cancel
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Actions Row */}
+                        <div className="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-white/5">
+                          <div className="flex items-center gap-2 text-xs text-slate-400">
+                            {deal.trackingNumber && (
+                              <span className="flex items-center gap-1.5 text-emerald-400 font-mono">
+                                <Truck weight="bold" className="w-4 h-4" /> Tracking: {deal.trackingNumber}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="flex items-center gap-2 flex-wrap">
+                            {/* Inspect Details Button */}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setSelectedViewDeal(deal)}
+                              className="text-xs h-9 px-3 text-slate-300 hover:text-[#00F59B] cursor-pointer"
+                            >
+                              <Eye weight="bold" className="w-4 h-4 mr-1.5" />
+                              <span>Details</span>
+                            </Button>
+
+                            {/* Message/Chat Button */}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setSelectedChatDeal(deal)}
+                              className="text-xs h-9 px-3 text-slate-300 hover:text-white cursor-pointer relative"
+                            >
+                              <ChatCircle weight="bold" className="w-4 h-4 mr-1.5" />
+                              <span>Message</span>
+                              {messages[deal.id] && messages[deal.id].length > 0 && (
+                                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#00F59B] text-[#04100C] text-xs font-bold flex items-center justify-center">
+                                  {messages[deal.id].length}
+                                </span>
+                              )}
+                            </Button>
+
+                            {/* Dispute Button */}
+                            {(deal.status === "in_inspection" || deal.status === "funds_locked") && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setDisputeDeal(deal)}
+                                className="text-xs h-9 px-3 text-red-400 hover:text-red-300 cursor-pointer"
+                              >
+                                <Warning weight="bold" className="w-4 h-4 mr-1.5" />
+                                <span>Dispute</span>
+                              </Button>
+                            )}
+
+                            {deal.status === "dispute" && (
+                              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-950/50 border border-red-500/30 text-xs text-red-300">
+                                <Scales weight="bold" className="w-4 h-4" />
+                                <span>In Arbitration</span>
+                              </div>
+                            )}
+
+                            {deal.status === "in_inspection" && deal.role === "Buyer" && (
+                              <Button
+                                size="sm"
+                                onClick={() => setSelectedDealToApprove(deal)}
+                                className="bg-[#00F59B] text-[#04100C] font-bold text-xs h-9 px-4 rounded-lg hover:bg-[#33F7AC] cursor-pointer"
+                              >
+                                <CheckCircle weight="bold" className="w-4 h-4 mr-1.5" />
+                                <span>Approve & Release</span>
+                              </Button>
+                            )}
+
+                            {deal.status === "funds_locked" && (
+                              <Button
+                                variant="secondary"
+                                size="sm"
+                                onClick={() => {
+                                  setTrackingInputDealId(deal.id);
+                                  setTrackingNumberText("");
+                                }}
+                                className="text-xs h-9 px-4 rounded-lg font-semibold cursor-pointer"
+                              >
+                                <Truck weight="bold" className="w-4 h-4 mr-1.5" />
+                                <span>{deal.role === "Seller" ? "Upload Tracking" : "Mark Shipped"}</span>
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </>
             )}
@@ -2013,6 +2347,292 @@ export default function DashboardPage() {
                 <CheckCircle weight="bold" className="w-4 h-4 mr-1.5" />
                 <span>Sign & Release</span>
               </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Deal Details Inspector */}
+      {selectedViewDeal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in overflow-y-auto">
+          <div className="bg-[#091510] rounded-3xl p-6 sm:p-8 border border-emerald-500/40 max-w-3xl w-full shadow-2xl space-y-6 my-8 max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="flex items-start justify-between pb-4 border-b border-white/10">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  <span className="text-xs font-mono text-[#00F59B] bg-emerald-950/80 px-2.5 py-1 rounded-md border border-emerald-500/40 font-bold">
+                    {selectedViewDeal.id}
+                  </span>
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/10 text-slate-300">
+                    Role: {selectedViewDeal.role}
+                  </span>
+                  {selectedViewDeal.status === "in_inspection" && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-950/80 border border-amber-500/40 text-amber-300 text-xs font-bold">
+                      <Clock weight="bold" className="w-3.5 h-3.5" />
+                      <span>Day {selectedViewDeal.inspectionDaysLeft} of {selectedViewDeal.inspectionDays}</span>
+                    </span>
+                  )}
+                  {selectedViewDeal.status === "funds_locked" && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 text-xs font-bold">
+                      <ShieldCheck weight="bold" className="w-3.5 h-3.5" />
+                      <span>Funds Locked</span>
+                    </span>
+                  )}
+                  {selectedViewDeal.status === "completed" && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-[#00F59B] text-xs font-bold">
+                      <CheckCircle weight="bold" className="w-3.5 h-3.5" />
+                      <span>Completed</span>
+                    </span>
+                  )}
+                  {selectedViewDeal.status === "dispute" && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-red-950/80 border border-red-500/40 text-red-300 text-xs font-bold">
+                      <Warning weight="bold" className="w-3.5 h-3.5" />
+                      <span>Under Arbitration</span>
+                    </span>
+                  )}
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white pt-1">
+                  {selectedViewDeal.title}
+                </h3>
+                <p className="text-xs text-slate-400">
+                  Created on {selectedViewDeal.createdAt} • Multi-Sig Segregation Active
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedViewDeal(null)}
+                className="p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer text-slate-400 hover:text-white"
+              >
+                <X weight="bold" className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Financial & Vault Summary Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="p-4 rounded-xl bg-[#040806] border border-white/10">
+                <div className="text-xs text-slate-400">Total Escrow Value</div>
+                <div className="text-xl font-bold text-[#00F59B] mt-0.5">
+                  {formatAmount(selectedViewDeal.totalAmount, selectedViewDeal.currency)}
+                </div>
+                <div className="text-[11px] text-slate-500 mt-0.5">
+                  Settlement Currency: {selectedViewDeal.currency}
+                </div>
+              </div>
+
+              <div className="p-4 rounded-xl bg-[#040806] border border-white/10">
+                <div className="text-xs text-slate-400">Inspection Window</div>
+                <div className="text-lg font-bold text-white mt-0.5">
+                  {selectedViewDeal.inspectionDays} Days
+                </div>
+                <div className="text-[11px] text-slate-500 mt-0.5">
+                  {selectedViewDeal.status === "in_inspection"
+                    ? `${selectedViewDeal.inspectionDaysLeft} days remaining`
+                    : "Multi-sig timer ready"}
+                </div>
+              </div>
+
+              <div className="p-4 rounded-xl bg-[#040806] border border-white/10">
+                <div className="text-xs text-slate-400">Vault Segregation</div>
+                <div className="text-xs font-mono text-white mt-1 truncate flex items-center justify-between">
+                  <span>{selectedViewDeal.vaultAddress}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(selectedViewDeal.vaultAddress, selectedViewDeal.id + "-detail")}
+                    className="hover:text-[#00F59B] transition-colors ml-1 cursor-pointer"
+                  >
+                    {copiedId === selectedViewDeal.id + "-detail" ? (
+                      <Check weight="bold" className="w-3.5 h-3.5 text-[#00F59B]" />
+                    ) : (
+                      <Copy weight="bold" className="w-3.5 h-3.5" />
+                    )}
+                  </button>
+                </div>
+                <div className="text-[11px] text-emerald-400 mt-1 flex items-center gap-1 font-semibold">
+                  <ShieldCheck weight="bold" className="w-3 h-3" />
+                  <span>2-of-3 Hardware Quorum</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Lifecycle Tracker */}
+            <div className="p-4 rounded-xl bg-[#040806] border border-white/5 space-y-3">
+              <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                Escrow Checkpoint Lifecycle
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                <div className="flex items-center gap-2 text-emerald-400">
+                  <CheckCircle weight="fill" className="w-4 h-4 shrink-0" />
+                  <span>1. Collateral Locked</span>
+                </div>
+                <div
+                  className={`flex items-center gap-2 ${
+                    selectedViewDeal.shippingSubmitted ||
+                    selectedViewDeal.status === "in_inspection" ||
+                    selectedViewDeal.status === "completed"
+                      ? "text-emerald-400"
+                      : "text-slate-500"
+                  }`}
+                >
+                  <CheckCircle
+                    weight={
+                      selectedViewDeal.shippingSubmitted || selectedViewDeal.status === "completed"
+                        ? "fill"
+                        : "bold"
+                    }
+                    className="w-4 h-4 shrink-0"
+                  />
+                  <span>2. Shipment / Tracking</span>
+                </div>
+                <div
+                  className={`flex items-center gap-2 ${
+                    selectedViewDeal.status === "in_inspection"
+                      ? "text-amber-400 font-bold"
+                      : selectedViewDeal.status === "completed"
+                      ? "text-emerald-400"
+                      : "text-slate-500"
+                  }`}
+                >
+                  <Clock weight="bold" className="w-4 h-4 shrink-0" />
+                  <span>3. Inspection Window</span>
+                </div>
+                <div
+                  className={`flex items-center gap-2 ${
+                    selectedViewDeal.status === "completed" ? "text-[#00F59B] font-bold" : "text-slate-500"
+                  }`}
+                >
+                  <CheckCircle
+                    weight={selectedViewDeal.status === "completed" ? "fill" : "bold"}
+                    className="w-4 h-4 shrink-0"
+                  />
+                  <span>4. Payout Disbursed</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Items & Deliverables Scope */}
+            <div className="space-y-3">
+              <h4 className="text-sm font-bold text-white uppercase tracking-wider text-slate-300">
+                Deliverables & Item Scope ({selectedViewDeal.items.length})
+              </h4>
+              <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+                {selectedViewDeal.items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="p-3.5 rounded-xl bg-[#040806] border border-white/10 flex items-start justify-between gap-4"
+                  >
+                    <div className="space-y-0.5">
+                      <div className="text-sm font-bold text-white">{item.name}</div>
+                      <div className="text-xs text-slate-400">{item.description}</div>
+                      <span className="inline-block text-[10px] uppercase font-semibold text-slate-400 bg-white/5 px-2 py-0.5 rounded mt-1">
+                        {item.category}
+                      </span>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-sm font-bold text-white">
+                        {formatAmount(item.price, selectedViewDeal.currency)}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Tracking if available */}
+            {selectedViewDeal.trackingNumber && (
+              <div className="p-3.5 rounded-xl bg-[#040806] border border-white/10 flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <Truck weight="bold" className="w-4 h-4 text-emerald-400" />
+                  <span className="text-slate-300">Logistics Tracking:</span>
+                  <span className="font-mono text-emerald-400 font-bold">{selectedViewDeal.trackingNumber}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleCopy(selectedViewDeal.trackingNumber!, selectedViewDeal.id + "-tracking")
+                  }
+                  className="hover:text-[#00F59B] text-slate-400 transition-colors cursor-pointer"
+                >
+                  {copiedId === selectedViewDeal.id + "-tracking" ? (
+                    <Check weight="bold" className="w-3.5 h-3.5 text-[#00F59B]" />
+                  ) : (
+                    <Copy weight="bold" className="w-3.5 h-3.5" />
+                  )}
+                </button>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
+              <Button
+                variant="ghost"
+                onClick={() => setSelectedViewDeal(null)}
+                className="h-11 px-4 text-xs font-semibold text-slate-300 hover:text-white cursor-pointer"
+              >
+                Close Inspector
+              </Button>
+
+              <div className="flex items-center gap-2 flex-wrap">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => {
+                    const deal = selectedViewDeal;
+                    setSelectedViewDeal(null);
+                    setSelectedChatDeal(deal);
+                  }}
+                  className="h-10 px-4 text-xs font-semibold cursor-pointer"
+                >
+                  <ChatCircle weight="bold" className="w-4 h-4 mr-1.5" />
+                  <span>Message Counterparty</span>
+                </Button>
+
+                {(selectedViewDeal.status === "in_inspection" || selectedViewDeal.status === "funds_locked") && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      const deal = selectedViewDeal;
+                      setSelectedViewDeal(null);
+                      setDisputeDeal(deal);
+                    }}
+                    className="h-10 px-4 text-xs font-semibold border-red-500/40 text-red-400 hover:bg-red-950/40 cursor-pointer"
+                  >
+                    <Warning weight="bold" className="w-4 h-4 mr-1.5" />
+                    <span>Raise Dispute</span>
+                  </Button>
+                )}
+
+                {selectedViewDeal.status === "in_inspection" && selectedViewDeal.role === "Buyer" && (
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      const deal = selectedViewDeal;
+                      setSelectedViewDeal(null);
+                      setSelectedDealToApprove(deal);
+                    }}
+                    className="h-10 px-5 bg-[#00F59B] text-[#04100C] hover:bg-[#33F7AC] font-bold text-xs rounded-xl cursor-pointer"
+                  >
+                    <CheckCircle weight="bold" className="w-4 h-4 mr-1.5" />
+                    <span>Approve & Release Payment</span>
+                  </Button>
+                )}
+
+                {selectedViewDeal.status === "funds_locked" && (
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      const deal = selectedViewDeal;
+                      setSelectedViewDeal(null);
+                      setTrackingInputDealId(deal.id);
+                      setTrackingNumberText("");
+                    }}
+                    className="h-10 px-4 text-xs font-semibold cursor-pointer bg-white/10 hover:bg-white/20 text-white"
+                  >
+                    <Truck weight="bold" className="w-4 h-4 mr-1.5" />
+                    <span>{selectedViewDeal.role === "Seller" ? "Upload Tracking" : "Mark Shipped"}</span>
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -53,7 +53,7 @@ export default function FAQSection() {
 
   return (
     <section id="faq" className="py-24 bg-[#070C10] relative border-t border-white/10">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="app-container-narrow">
         
         {/* Section Header */}
         <div className="text-center space-y-4 mb-16">
