@@ -29,6 +29,14 @@ import {
   Scales,
   QrCode,
   Lightning,
+  Bell,
+  ChatCircle,
+  MagnifyingGlass,
+  Gear,
+  ClockCounterClockwise,
+  PaperPlaneTilt,
+  Warning,
+  X,
 } from "@phosphor-icons/react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -121,8 +129,38 @@ export default function DashboardPage() {
 
   // Active Deals State (Default empty for clean workspace until user creates or loads test data)
   const [deals, setDeals] = useState<EscrowDeal[]>([]);
-  const [activeTab, setActiveTab] = useState<"deals" | "wizard">("deals");
-  const [dealFilter, setDealFilter] = useState<"all" | "funds_locked" | "in_inspection" | "completed">("all");
+  const [activeTab, setActiveTab] = useState<"deals" | "wizard" | "history" | "notifications" | "settings">("deals");
+  const [dealFilter, setDealFilter] = useState<"all" | "funds_locked" | "in_inspection" | "completed" | "dispute">("all");
+  
+  // Notifications State
+  const [notifications, setNotifications] = useState<Array<{
+    id: string;
+    type: "info" | "warning" | "success" | "action";
+    title: string;
+    message: string;
+    dealId?: string;
+    timestamp: string;
+    read: boolean;
+  }>>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  
+  // Communication State
+  const [selectedChatDeal, setSelectedChatDeal] = useState<EscrowDeal | null>(null);
+  const [messages, setMessages] = useState<Record<string, Array<{
+    id: string;
+    sender: "me" | "counterparty";
+    text: string;
+    timestamp: string;
+  }>>>({});
+  const [messageText, setMessageText] = useState("");
+  
+  // Dispute State
+  const [disputeDeal, setDisputeDeal] = useState<EscrowDeal | null>(null);
+  const [disputeReason, setDisputeReason] = useState("");
+  const [disputeEvidence, setDisputeEvidence] = useState("");
+  
+  // Search & Filter
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Multi-Step Progressive Transaction Wizard (Step 1 -> Step 2 -> Step 3 -> Step 4)
   const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
@@ -322,12 +360,40 @@ export default function DashboardPage() {
 
   const handleLoadSampleDeals = () => {
     setDeals(SAMPLE_TEST_DEALS);
+    
+    // Add sample notifications
+    const sampleNotifications = [
+      {
+        id: "notif-1",
+        type: "action" as const,
+        title: "Inspection Window Expiring",
+        message: "ESC-8921 (Porsche 911) inspection ends in 3 days. Approve or dispute soon.",
+        dealId: "ESC-8921",
+        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        read: false,
+      },
+      {
+        id: "notif-2",
+        type: "info" as const,
+        title: "Funds Secured",
+        message: "ESC-8914 collateral locked in multi-sig vault. Awaiting shipment.",
+        dealId: "ESC-8914",
+        timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+        read: false,
+      },
+    ];
+    
+    setNotifications(sampleNotifications);
+    setUnreadCount(2);
     setSuccessToast("Sample test scenario loaded with 2 active transactions!");
     setTimeout(() => setSuccessToast(""), 3500);
   };
 
   const handleClearWorkspace = () => {
     setDeals([]);
+    setNotifications([]);
+    setUnreadCount(0);
+    setMessages({});
     setSuccessToast("Workspace cleared.");
     setTimeout(() => setSuccessToast(""), 3000);
   };
@@ -453,6 +519,21 @@ export default function DashboardPage() {
             </div>
 
             <div className="flex items-center gap-3 w-full sm:w-auto">
+              
+              {/* Notification Bell */}
+              <button
+                type="button"
+                onClick={() => setActiveTab("notifications")}
+                className="relative p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors cursor-pointer"
+              >
+                <Bell weight="bold" className="w-5 h-5 text-slate-300" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+              
               <button
                 type="button"
                 onClick={() => {
@@ -466,7 +547,7 @@ export default function DashboardPage() {
                 }`}
               >
                 <Plus weight="bold" className="w-4 h-4" />
-                <span>+ Start New Transaction</span>
+                <span>+ New Transaction</span>
               </button>
 
               <Button
@@ -524,54 +605,360 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* View Mode Navigation Tabs: Active Deals vs. Create Transaction Wizard */}
-        <div className="flex items-center justify-between border-b border-white/10 pb-4">
+        {/* View Mode Navigation Tabs: Active Deals / Create / History / Notifications / Settings */}
+        <div className="flex items-center justify-between border-b border-white/10 pb-4 overflow-x-auto">
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setActiveTab("deals")}
-              className={`px-5 py-2.5 text-sm font-bold rounded-xl transition-all cursor-pointer ${
+              className={`px-5 py-2.5 text-sm font-bold rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
                 activeTab === "deals"
                   ? "bg-[#00F59B] text-[#04100C] shadow-md"
                   : "bg-white/5 text-slate-400 hover:text-white"
               }`}
             >
-              Active Deals ({deals.length})
+              <ShieldCheck weight="bold" className="w-4 h-4" />
+              <span>Active Deals ({deals.length})</span>
             </button>
 
             <button
               type="button"
               onClick={() => setActiveTab("wizard")}
-              className={`px-5 py-2.5 text-sm font-bold rounded-xl transition-all cursor-pointer ${
+              className={`px-5 py-2.5 text-sm font-bold rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
                 activeTab === "wizard"
                   ? "bg-[#00F59B] text-[#04100C] shadow-md"
                   : "bg-white/5 text-slate-400 hover:text-white"
               }`}
             >
-              + Create Transaction Wizard
+              <Plus weight="bold" className="w-4 h-4" />
+              <span>Create New</span>
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => setActiveTab("history")}
+              className={`px-5 py-2.5 text-sm font-bold rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+                activeTab === "history"
+                  ? "bg-[#00F59B] text-[#04100C] shadow-md"
+                  : "bg-white/5 text-slate-400 hover:text-white"
+              }`}
+            >
+              <ClockCounterClockwise weight="bold" className="w-4 h-4" />
+              <span>History</span>
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => {
+                setActiveTab("notifications");
+                setUnreadCount(0);
+                setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+              }}
+              className={`px-5 py-2.5 text-sm font-bold rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap relative ${
+                activeTab === "notifications"
+                  ? "bg-[#00F59B] text-[#04100C] shadow-md"
+                  : "bg-white/5 text-slate-400 hover:text-white"
+              }`}
+            >
+              <Bell weight="bold" className="w-4 h-4" />
+              <span>Alerts</span>
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => setActiveTab("settings")}
+              className={`px-5 py-2.5 text-sm font-bold rounded-xl transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap ${
+                activeTab === "settings"
+                  ? "bg-[#00F59B] text-[#04100C] shadow-md"
+                  : "bg-white/5 text-slate-400 hover:text-white"
+              }`}
+            >
+              <Gear weight="bold" className="w-4 h-4" />
+              <span>Settings</span>
             </button>
           </div>
 
           <div className="flex items-center gap-2">
-            {deals.length === 0 ? (
+            {deals.length === 0 && activeTab === "deals" ? (
               <button
                 type="button"
                 onClick={handleLoadSampleDeals}
-                className="text-xs text-[#00F59B] hover:underline bg-emerald-950/60 border border-emerald-500/30 px-3 py-1.5 rounded-lg cursor-pointer font-medium"
+                className="text-xs text-[#00F59B] hover:underline bg-emerald-950/60 border border-emerald-500/30 px-3 py-1.5 rounded-lg cursor-pointer font-medium whitespace-nowrap"
               >
                 Load Sample Test Scenario
               </button>
-            ) : (
+            ) : deals.length > 0 && activeTab === "deals" ? (
               <button
                 type="button"
                 onClick={handleClearWorkspace}
-                className="text-xs text-slate-400 hover:text-red-400 transition-colors cursor-pointer"
+                className="text-xs text-slate-400 hover:text-red-400 transition-colors cursor-pointer whitespace-nowrap"
               >
                 Clear Workspace
               </button>
-            )}
+            ) : null}
           </div>
         </div>
+
+        {/* TAB: TRANSACTION HISTORY */}
+        {activeTab === "history" && (
+          <div className="bg-[#091510] rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <div>
+                <h2 className="text-2xl font-bold text-white">Transaction History</h2>
+                <p className="text-sm text-slate-400 mt-1">View all past and completed escrow agreements</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <Input
+                  type="text"
+                  placeholder="Search by ID, title, or amount..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-64 h-10 text-sm"
+                />
+                <MagnifyingGlass weight="bold" className="w-5 h-5 text-slate-400 -ml-10" />
+              </div>
+            </div>
+
+            {deals.filter((d) => d.status === "completed").length === 0 ? (
+              <div className="text-center py-16 space-y-4">
+                <ClockCounterClockwise weight="bold" className="w-16 h-16 text-slate-600 mx-auto" />
+                <div>
+                  <h3 className="text-lg font-bold text-white">No Completed Transactions Yet</h3>
+                  <p className="text-sm text-slate-400 mt-2">Your transaction history will appear here once deals are completed.</p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {deals
+                  .filter((d) => d.status === "completed")
+                  .filter((d) =>
+                    searchQuery
+                      ? d.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        d.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        d.totalAmount.toString().includes(searchQuery)
+                      : true
+                  )
+                  .map((deal) => (
+                    <div
+                      key={deal.id}
+                      className="p-6 rounded-2xl bg-[#050B08] border border-white/10 hover:border-emerald-500/30 transition-all space-y-4"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-xs font-mono text-[#00F59B] bg-emerald-950/60 px-2 py-0.5 rounded">
+                              {deal.id}
+                            </span>
+                            <span className="text-lg font-bold text-white">{deal.title}</span>
+                          </div>
+                          <p className="text-xs text-slate-400">Completed on {deal.createdAt} • {deal.role}</p>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-xs text-slate-400">Escrow Value</div>
+                          <div className="text-xl font-bold text-[#00F59B]">{formatAmount(deal.totalAmount, deal.currency)}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs">
+                        <CheckCircle weight="fill" className="w-4 h-4 text-emerald-400" />
+                        <span className="text-emerald-400 font-semibold">Successfully Released & Completed</span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* TAB: NOTIFICATIONS & ALERTS */}
+        {activeTab === "notifications" && (
+          <div className="bg-[#091510] rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <div>
+                <h2 className="text-2xl font-bold text-white">Notifications & Alerts</h2>
+                <p className="text-sm text-slate-400 mt-1">Stay informed about important transaction events</p>
+              </div>
+              {notifications.length > 0 && (
+                <button
+                  onClick={() => {
+                    setNotifications([]);
+                    setUnreadCount(0);
+                  }}
+                  className="text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
+                >
+                  Clear All
+                </button>
+              )}
+            </div>
+
+            {notifications.length === 0 ? (
+              <div className="text-center py-16 space-y-4">
+                <Bell weight="bold" className="w-16 h-16 text-slate-600 mx-auto" />
+                <div>
+                  <h3 className="text-lg font-bold text-white">All Caught Up!</h3>
+                  <p className="text-sm text-slate-400 mt-2">No new notifications at the moment.</p>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {notifications.map((notif) => (
+                  <div
+                    key={notif.id}
+                    className={`p-4 rounded-xl border transition-all ${
+                      notif.type === "action"
+                        ? "bg-amber-950/50 border-amber-500/30"
+                        : notif.type === "warning"
+                        ? "bg-red-950/50 border-red-500/30"
+                        : notif.type === "success"
+                        ? "bg-emerald-950/50 border-emerald-500/30"
+                        : "bg-[#050B08] border-white/10"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex-1 space-y-1">
+                        <div className="flex items-center gap-2">
+                          {notif.type === "action" && <Warning weight="bold" className="w-4 h-4 text-amber-400" />}
+                          {notif.type === "success" && <CheckCircle weight="bold" className="w-4 h-4 text-emerald-400" />}
+                          {notif.type === "info" && <ShieldCheck weight="bold" className="w-4 h-4 text-cyan-400" />}
+                          <h4 className="text-sm font-bold text-white">{notif.title}</h4>
+                        </div>
+                        <p className="text-xs text-slate-300 leading-relaxed">{notif.message}</p>
+                        <p className="text-xs text-slate-500 mt-2">
+                          {new Date(notif.timestamp).toLocaleString()}
+                        </p>
+                      </div>
+                      {notif.dealId && (
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={() => {
+                            setActiveTab("deals");
+                            setDealFilter("all");
+                            // Optional: scroll to deal or highlight it
+                          }}
+                          className="text-xs h-8 cursor-pointer shrink-0"
+                        >
+                          View Deal
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* TAB: ACCOUNT SETTINGS */}
+        {activeTab === "settings" && (
+          <div className="bg-[#091510] rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl space-y-8">
+            <div>
+              <h2 className="text-2xl font-bold text-white">Account Settings</h2>
+              <p className="text-sm text-slate-400 mt-1">Manage your profile, security, and preferences</p>
+            </div>
+
+            {/* Profile Section */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <User weight="bold" className="w-5 h-5 text-[#00F59B]" />
+                <span>Profile Information</span>
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="p-4 rounded-xl bg-[#050B08] border border-white/10">
+                  <div className="text-xs text-slate-400 mb-1">Username</div>
+                  <div className="text-base font-bold text-white">@{user?.username}</div>
+                </div>
+                <div className="p-4 rounded-xl bg-[#050B08] border border-white/10">
+                  <div className="text-xs text-slate-400 mb-1">Account Type</div>
+                  <div className="text-base font-bold text-[#00F59B]">Verified User</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Security Section */}
+            <div className="space-y-4 pt-6 border-t border-white/10">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <Lock weight="bold" className="w-5 h-5 text-[#00F59B]" />
+                <span>Security & Authentication</span>
+              </h3>
+              <div className="space-y-3">
+                <div className="p-4 rounded-xl bg-[#050B08] border border-white/10 flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-bold text-white">Two-Factor Authentication (2FA)</div>
+                    <div className="text-xs text-slate-400 mt-0.5">Add extra security to your account</div>
+                  </div>
+                  <Button variant="secondary" size="sm" className="cursor-pointer">Enable 2FA</Button>
+                </div>
+                <div className="p-4 rounded-xl bg-[#050B08] border border-white/10 flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-bold text-white">Change Password</div>
+                    <div className="text-xs text-slate-400 mt-0.5">Update your login credentials</div>
+                  </div>
+                  <Button variant="secondary" size="sm" className="cursor-pointer">Change</Button>
+                </div>
+                <div className="p-4 rounded-xl bg-[#050B08] border border-white/10 flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-bold text-white">Hardware Wallet Connection</div>
+                    <div className="text-xs text-slate-400 mt-0.5">Connect MetaMask, Ledger, or Phantom</div>
+                  </div>
+                  <Button variant="secondary" size="sm" className="cursor-pointer">Connect Wallet</Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Notifications Preferences */}
+            <div className="space-y-4 pt-6 border-t border-white/10">
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <Bell weight="bold" className="w-5 h-5 text-[#00F59B]" />
+                <span>Notification Preferences</span>
+              </h3>
+              <div className="space-y-3">
+                <div className="p-4 rounded-xl bg-[#050B08] border border-white/10 flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-bold text-white">Email Notifications</div>
+                    <div className="text-xs text-slate-400 mt-0.5">Receive alerts for transaction updates</div>
+                  </div>
+                  <input type="checkbox" defaultChecked className="w-5 h-5 rounded accent-[#00F59B]" />
+                </div>
+                <div className="p-4 rounded-xl bg-[#050B08] border border-white/10 flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-bold text-white">Inspection Deadline Warnings</div>
+                    <div className="text-xs text-slate-400 mt-0.5">Get reminded before inspection windows expire</div>
+                  </div>
+                  <input type="checkbox" defaultChecked className="w-5 h-5 rounded accent-[#00F59B]" />
+                </div>
+                <div className="p-4 rounded-xl bg-[#050B08] border border-white/10 flex items-center justify-between">
+                  <div>
+                    <div className="text-sm font-bold text-white">Counterparty Actions</div>
+                    <div className="text-xs text-slate-400 mt-0.5">Notify when buyer/seller takes action</div>
+                  </div>
+                  <input type="checkbox" defaultChecked className="w-5 h-5 rounded accent-[#00F59B]" />
+                </div>
+              </div>
+            </div>
+
+            {/* Danger Zone */}
+            <div className="space-y-4 pt-6 border-t border-red-500/20">
+              <h3 className="text-lg font-bold text-red-400 flex items-center gap-2">
+                <Warning weight="bold" className="w-5 h-5" />
+                <span>Danger Zone</span>
+              </h3>
+              <div className="p-4 rounded-xl bg-red-950/30 border border-red-500/30 flex items-center justify-between">
+                <div>
+                  <div className="text-sm font-bold text-white">Delete Account</div>
+                  <div className="text-xs text-slate-400 mt-0.5">Permanently remove your account and all data</div>
+                </div>
+                <Button variant="outline" size="sm" className="border-red-500 text-red-400 hover:bg-red-950 cursor-pointer">
+                  Delete Account
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* TAB 1: PROGRESSIVE TRANSACTION CREATION WIZARD (Dark Theme & Perfectly Styled) */}
         {activeTab === "wizard" && (
@@ -1079,6 +1466,15 @@ export default function DashboardPage() {
                     </button>
                     <button
                       type="button"
+                      onClick={() => setDealFilter("dispute")}
+                      className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
+                        dealFilter === "dispute" ? "bg-[#00F59B] text-[#04100C] font-bold" : "text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      Disputes
+                    </button>
+                    <button
+                      type="button"
                       onClick={() => setDealFilter("completed")}
                       className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
                         dealFilter === "completed" ? "bg-[#00F59B] text-[#04100C] font-bold" : "text-slate-400 hover:text-white"
@@ -1149,6 +1545,12 @@ export default function DashboardPage() {
                               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-[#00F59B] text-xs font-bold">
                                 <CheckCircle weight="bold" className="w-4 h-4" />
                                 <span>Completed & Released</span>
+                              </span>
+                            )}
+                            {deal.status === "dispute" && (
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-950/80 border border-red-500/40 text-red-300 text-xs font-bold">
+                                <Warning weight="bold" className="w-4 h-4" />
+                                <span>In Dispute / Arbitration</span>
                               </span>
                             )}
                           </div>
@@ -1240,7 +1642,45 @@ export default function DashboardPage() {
                           )}
                         </div>
 
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          
+                          {/* Message/Chat Button */}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setSelectedChatDeal(deal)}
+                            className="text-xs h-9 px-3 text-slate-300 hover:text-white cursor-pointer relative"
+                          >
+                            <ChatCircle weight="bold" className="w-4 h-4 mr-1.5" />
+                            <span>Message</span>
+                            {messages[deal.id] && messages[deal.id].length > 0 && (
+                              <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#00F59B] text-[#04100C] text-xs font-bold flex items-center justify-center">
+                                {messages[deal.id].length}
+                              </span>
+                            )}
+                          </Button>
+                          
+                          {/* Dispute Button (visible during inspection or funds_locked, not when already in dispute) */}
+                          {(deal.status === "in_inspection" || deal.status === "funds_locked") && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => setDisputeDeal(deal)}
+                              className="text-xs h-9 px-3 text-red-400 hover:text-red-300 cursor-pointer"
+                            >
+                              <Warning weight="bold" className="w-4 h-4 mr-1.5" />
+                              <span>Raise Dispute</span>
+                            </Button>
+                          )}
+                          
+                          {/* Show Dispute Status Info if already in dispute */}
+                          {deal.status === "dispute" && (
+                            <div className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-red-950/50 border border-red-500/30 text-xs text-red-300">
+                              <Scales weight="bold" className="w-4 h-4" />
+                              <span>Arbitrator reviewing evidence</span>
+                            </div>
+                          )}
+
                           {deal.status === "in_inspection" && deal.role === "Buyer" && (
                             <Button
                               size="sm"
@@ -1286,6 +1726,254 @@ export default function DashboardPage() {
         )}
 
       </main>
+
+      {/* Modal: In-App Chat/Messaging System */}
+      {selectedChatDeal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-[#091510] rounded-3xl p-6 border border-emerald-500/40 max-w-2xl w-full h-[600px] shadow-2xl flex flex-col">
+            
+            {/* Chat Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+              <div>
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <ChatCircle weight="bold" className="w-5 h-5 text-[#00F59B]" />
+                  <span>Chat: {selectedChatDeal.title}</span>
+                </h3>
+                <p className="text-xs text-slate-400 mt-1">
+                  Secure encrypted messaging with counterparty • Deal ID: {selectedChatDeal.id}
+                </p>
+              </div>
+              <button
+                onClick={() => setSelectedChatDeal(null)}
+                className="p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+              >
+                <X weight="bold" className="w-5 h-5 text-slate-400 hover:text-white" />
+              </button>
+            </div>
+
+            {/* Messages Area */}
+            <div className="flex-1 overflow-y-auto py-4 space-y-3">
+              {(!messages[selectedChatDeal.id] || messages[selectedChatDeal.id].length === 0) ? (
+                <div className="text-center py-12 space-y-3">
+                  <ChatCircle weight="bold" className="w-12 h-12 text-slate-600 mx-auto" />
+                  <div>
+                    <h4 className="text-sm font-bold text-white">No Messages Yet</h4>
+                    <p className="text-xs text-slate-400 mt-1">Start the conversation with your counterparty</p>
+                  </div>
+                </div>
+              ) : (
+                messages[selectedChatDeal.id].map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}
+                  >
+                    <div
+                      className={`max-w-md px-4 py-2.5 rounded-2xl ${
+                        msg.sender === "me"
+                          ? "bg-[#00F59B] text-[#04100C]"
+                          : "bg-[#050B08] border border-white/10 text-white"
+                      }`}
+                    >
+                      <p className="text-sm leading-relaxed">{msg.text}</p>
+                      <p className={`text-xs mt-1 ${msg.sender === "me" ? "text-[#04100C]/60" : "text-slate-500"}`}>
+                        {new Date(msg.timestamp).toLocaleTimeString()}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* Message Input */}
+            <div className="pt-4 border-t border-white/10 flex gap-2">
+              <Input
+                type="text"
+                value={messageText}
+                onChange={(e) => setMessageText(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey && messageText.trim()) {
+                    e.preventDefault();
+                    const newMessage = {
+                      id: `msg-${Date.now()}`,
+                      sender: "me" as const,
+                      text: messageText.trim(),
+                      timestamp: new Date().toISOString(),
+                    };
+                    setMessages((prev) => ({
+                      ...prev,
+                      [selectedChatDeal.id]: [...(prev[selectedChatDeal.id] || []), newMessage],
+                    }));
+                    setMessageText("");
+                  }
+                }}
+                placeholder="Type your message..."
+                className="flex-1 h-11 text-sm"
+              />
+              <Button
+                size="sm"
+                onClick={() => {
+                  if (!messageText.trim()) return;
+                  const newMessage = {
+                    id: `msg-${Date.now()}`,
+                    sender: "me" as const,
+                    text: messageText.trim(),
+                    timestamp: new Date().toISOString(),
+                  };
+                  setMessages((prev) => ({
+                    ...prev,
+                    [selectedChatDeal.id]: [...(prev[selectedChatDeal.id] || []), newMessage],
+                  }));
+                  setMessageText("");
+                }}
+                className="h-11 px-4 cursor-pointer"
+              >
+                <PaperPlaneTilt weight="bold" className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Dispute Raising UI */}
+      {disputeDeal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="bg-[#091510] rounded-3xl p-6 sm:p-8 border border-red-500/40 max-w-2xl w-full shadow-2xl space-y-6">
+            
+            {/* Dispute Header */}
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                  <Warning weight="bold" className="w-6 h-6 text-red-400" />
+                  <span>Raise Dispute</span>
+                </h3>
+                <p className="text-sm text-slate-300 mt-2 leading-relaxed">
+                  Filing a dispute for <span className="font-bold text-white">&quot;{disputeDeal.title}&quot;</span> (Deal ID: {disputeDeal.id})
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setDisputeDeal(null);
+                  setDisputeReason("");
+                  setDisputeEvidence("");
+                }}
+                className="p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+              >
+                <X weight="bold" className="w-5 h-5 text-slate-400 hover:text-white" />
+              </button>
+            </div>
+
+            {/* Warning Notice */}
+            <div className="p-4 rounded-xl bg-red-950/30 border border-red-500/30 space-y-2">
+              <div className="flex items-start gap-2">
+                <Warning weight="bold" className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                <div className="text-sm text-red-200 leading-relaxed">
+                  <p className="font-bold">Important Dispute Notice:</p>
+                  <ul className="list-disc ml-4 mt-2 space-y-1 text-xs">
+                    <li>Funds will remain locked in the multi-sig vault during arbitration</li>
+                    <li>A neutral third-party arbitrator will review evidence from both parties</li>
+                    <li>Decision is binding and final based on escrow agreement terms</li>
+                    <li>Frivolous disputes may result in account penalties</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Dispute Reason */}
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-white">
+                Dispute Reason <span className="text-red-400">*</span>
+              </label>
+              <Select value={disputeReason} onValueChange={setDisputeReason}>
+                <SelectTrigger className="w-full h-11 bg-[#050B08] border-white/15">
+                  <SelectValue placeholder="Select a reason..." />
+                </SelectTrigger>
+                <SelectContent className="bg-[#06090B] text-white border-white/15">
+                  <SelectItem value="item_not_as_described">Item Not As Described</SelectItem>
+                  <SelectItem value="item_damaged">Item Damaged or Defective</SelectItem>
+                  <SelectItem value="wrong_item_received">Wrong Item Received</SelectItem>
+                  <SelectItem value="item_not_received">Item Not Received / Missing Shipment</SelectItem>
+                  <SelectItem value="counterfeit_suspected">Counterfeit or Authenticity Issue</SelectItem>
+                  <SelectItem value="seller_unresponsive">Seller Unresponsive</SelectItem>
+                  <SelectItem value="breach_of_terms">Breach of Agreement Terms</SelectItem>
+                  <SelectItem value="other">Other (Explain Below)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Dispute Evidence/Description */}
+            <div className="space-y-2">
+              <label className="block text-sm font-bold text-white">
+                Detailed Evidence & Explanation <span className="text-red-400">*</span>
+              </label>
+              <textarea
+                rows={6}
+                value={disputeEvidence}
+                onChange={(e) => setDisputeEvidence(e.target.value)}
+                placeholder="Provide a detailed explanation with supporting evidence (photos, screenshots, tracking info, etc.). The arbitrator will review this information to make a decision."
+                className="w-full px-4 py-3 rounded-xl bg-[#050B08] border border-white/15 text-white text-sm placeholder:text-slate-600 outline-none focus:border-[#00F59B] resize-none"
+              />
+              <p className="text-xs text-slate-500">
+                Minimum 50 characters required. Be specific and provide all relevant details.
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-3 pt-4 border-t border-white/10">
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setDisputeDeal(null);
+                  setDisputeReason("");
+                  setDisputeEvidence("");
+                }}
+                className="flex-1 h-12 text-sm font-semibold rounded-xl cursor-pointer"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  if (!disputeReason || disputeEvidence.length < 50) {
+                    alert("Please select a dispute reason and provide detailed evidence (minimum 50 characters).");
+                    return;
+                  }
+                  
+                  // Update deal status to dispute
+                  setDeals((prev) =>
+                    prev.map((d) =>
+                      d.id === disputeDeal.id ? { ...d, status: "dispute" as const } : d
+                    )
+                  );
+                  
+                  // Add notification
+                  const disputeNotification = {
+                    id: `notif-dispute-${Date.now()}`,
+                    type: "warning" as const,
+                    title: "Dispute Filed Successfully",
+                    message: `Your dispute for "${disputeDeal.title}" has been submitted. An arbitrator will review within 24-48 hours.`,
+                    dealId: disputeDeal.id,
+                    timestamp: new Date().toISOString(),
+                    read: false,
+                  };
+                  setNotifications((prev) => [disputeNotification, ...prev]);
+                  setUnreadCount((prev) => prev + 1);
+                  
+                  setSuccessToast("Dispute filed. Funds remain locked pending arbitrator review.");
+                  setTimeout(() => setSuccessToast(""), 4000);
+                  
+                  setDisputeDeal(null);
+                  setDisputeReason("");
+                  setDisputeEvidence("");
+                }}
+                disabled={!disputeReason || disputeEvidence.length < 50}
+                className="flex-1 h-12 text-sm font-bold bg-red-500 hover:bg-red-600 text-white rounded-xl cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Warning weight="bold" className="w-4 h-4 mr-1.5" />
+                <span>Submit Dispute to Arbitrator</span>
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Confirmation Modal for Payout Release */}
       {selectedDealToApprove && (
