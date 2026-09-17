@@ -7,7 +7,7 @@ export default function TermsPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#06090B] text-slate-200">
       <Header />
-      <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24 space-y-8">
+      <main className="flex-1 app-container-narrow pt-32 pb-24 space-y-8">
         
         {/* Page Header */}
         <div className="space-y-3 border-b border-white/10 pb-6">

@@ -97,7 +97,7 @@ export default function FeeCalculator() {
 
   return (
     <section id="calculator" className="py-24 bg-[#07110C] relative border-t border-emerald-500/15">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="app-container">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">

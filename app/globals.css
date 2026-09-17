@@ -71,6 +71,49 @@
   --brand-primary: #00f59b;
   --brand-secondary: #10b981;
   --brand-dark: #059669;
+
+  /* Centralized Layout Gutter & Width System (Adjustable from here) */
+  --layout-px: clamp(1.25rem, 4vw, 5.5rem);
+  --layout-px-wide: clamp(1rem, 3vw, 4.5rem);
+  --layout-px-dashboard: clamp(1rem, 3.5vw, 5rem);
+  --layout-max-width: 100%;
+}
+
+/* Centralized Fluid Container Utilities */
+.app-container {
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--layout-px);
+  padding-right: var(--layout-px);
+}
+
+.app-container-wide {
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--layout-px-wide);
+  padding-right: var(--layout-px-wide);
+}
+
+.app-container-dashboard {
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--layout-px-dashboard);
+  padding-right: var(--layout-px-dashboard);
+}
+
+.app-container-narrow {
+  width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--layout-px);
+  padding-right: var(--layout-px);
 }
 
 @theme inline {

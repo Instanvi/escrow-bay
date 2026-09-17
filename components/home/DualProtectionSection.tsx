@@ -76,7 +76,7 @@ export default function DualProtectionSection() {
 
   return (
     <section id="protection" className="py-24 bg-[#050B10] relative border-t border-cyan-500/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="app-container">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">

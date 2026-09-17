@@ -134,7 +134,7 @@ export default function AuthForm({ initialMode = "login" }: AuthFormProps) {
       <Header />
 
       {/* Main Container with generous top/bottom padding to fit fixed Header */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40 pb-16 sm:pb-24 relative z-10 flex items-center justify-center">
+      <main className="flex-1 app-container pt-32 sm:pt-40 pb-16 sm:pb-24 relative z-10 flex items-center justify-center">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           
           {/* Left Column: Brand & Security Guarantee Highlights (Desktop) */}

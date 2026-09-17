@@ -75,7 +75,7 @@ export default function ProcessSteps() {
 
   return (
     <section id="how-it-works" className="py-24 bg-[#070D12] relative border-t border-white/10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="app-container space-y-12">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
