@@ -45,6 +45,50 @@ export const DEFAULT_ETH_QR_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://ww
 
 export const DEFAULT_USDT_QR_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none"><rect width="200" height="200" fill="%23ffffff" rx="12"/><path fill="%2304100c" d="M20 20h50v50H20zM30 30v30h30V30zm10 10h10v10H40zm90-20h50v50h-50zm10 10v30h30V30zm10 10h10v10h-10zM20 130h50v50H20zm10 10v30h30v-30zm10 10h10v10H40zm50-110h30v10H90zm10 20h10v30h-10zm30 0h20v10h-20zm-40 30h30v10H90zm40 10h20v20h-20zm-50 20h20v10H80zm30 10h20v20h-20zm30 0h20v10h-20zm-70 20h30v10H70zm50 0h20v20h-20zm-30 20h20v10H90zm40 0h20v10h-20z"/></svg>`;
 
+// Preset SVGs for extra popular cryptocurrencies
+export const LOGO_BNB = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="%23F3BA2F"/><path fill="%23FFFFFF" d="M32 14l6.5 6.5-6.5 6.5-6.5-6.5zm0 18l6.5 6.5-6.5 6.5-6.5-6.5zm-14.5-9l6.5 6.5-6.5 6.5-6.5-6.5zm29 0l6.5 6.5-6.5 6.5-6.5-6.5z"/></svg>`;
+
+export const LOGO_XRP = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="%2323292F"/><path fill="%23FFFFFF" d="M47 19h-5.2c-.8 0-1.6.3-2.1.9L32 27.5l-7.7-7.6c-.5-.6-1.3-.9-2.1-.9H17l11.4 11.3c2 2 5.2 2 7.2 0L47 19zm-30 26h5.2c.8 0 1.6-.3 2.1-.9L32 36.5l7.7 7.6c.5.6 1.3.9 2.1.9H47L35.6 33.7c-2-2-5.2-2-7.2 0L17 45z"/></svg>`;
+
+export const LOGO_DOGE = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="%23C2A633"/><text x="32" y="44" font-family="Arial,sans-serif" font-weight="900" font-size="34" fill="%23FFFFFF" text-anchor="middle">Ð</text></svg>`;
+
+export const LOGO_TRX = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="%23EC0623"/><path fill="%23FFFFFF" d="M16 20l28-6-16 34zm26-4L30 33l14-3zm-10 19l-9 11 19-14z"/></svg>`;
+
+export const LOGO_ADA = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="%230033AD"/><circle cx="32" cy="32" r="6" fill="%23FFFFFF"/><circle cx="32" cy="18" r="3.5" fill="%23FFFFFF"/><circle cx="32" cy="46" r="3.5" fill="%23FFFFFF"/><circle cx="18" cy="32" r="3.5" fill="%23FFFFFF"/><circle cx="46" cy="32" r="3.5" fill="%23FFFFFF"/><circle cx="22" cy="22" r="2.5" fill="%23FFFFFF"/><circle cx="42" cy="42" r="2.5" fill="%23FFFFFF"/><circle cx="42" cy="22" r="2.5" fill="%23FFFFFF"/><circle cx="22" cy="42" r="2.5" fill="%23FFFFFF"/></svg>`;
+
+export const LOGO_POL = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="%238247E5"/><path fill="%23FFFFFF" d="M41 24l-9-5.2-9 5.2v10.4l9 5.2 9-5.2V24zm-9 3.5l4.5 2.6-4.5 2.6-4.5-2.6 4.5-2.6z"/></svg>`;
+
+export const LOGO_XMR = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="%23FF6600"/><path fill="%23FFFFFF" d="M32 15l15 15v14h-8v-9L32 28l-7 7v9h-8V30zm-15 29v5h30v-5z"/></svg>`;
+
+export const LOGO_LTC = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="%23345D9D"/><path fill="%23FFFFFF" d="M26 18h8v16l7-2-1.5 5-5.5 1.5v3h10v6H26z"/></svg>`;
+
+export const LOGO_AVAX = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="%23E84142"/><path fill="%23FFFFFF" d="M29 18l-14 26h9l10-18zm6 10l8 16h8zm-3 8l-4 8h8z"/></svg>`;
+
+export interface CryptoPreset {
+  id: string;
+  name: string;
+  symbol: string;
+  network: string;
+  logo: string;
+}
+
+export const CRYPTO_LOGO_PRESETS: CryptoPreset[] = [
+  { id: "btc", name: "Bitcoin", symbol: "BTC", network: "Bitcoin Native SegWit", logo: "/bitcoinlogo.svg" },
+  { id: "eth", name: "Ethereum", symbol: "ETH", network: "Ethereum Mainnet (ERC-20)", logo: "/ethereumlogo.svg" },
+  { id: "usdt", name: "Tether USD", symbol: "USDT", network: "TRON (TRC-20)", logo: "/tetherlogo.svg" },
+  { id: "usdc", name: "USD Coin", symbol: "USDC", network: "Ethereum (ERC-20)", logo: "/usdclogo.svg" },
+  { id: "sol", name: "Solana", symbol: "SOL", network: "Solana Mainnet", logo: "/solanalogo.svg" },
+  { id: "bnb", name: "BNB", symbol: "BNB", network: "BNB Smart Chain (BEP-20)", logo: LOGO_BNB },
+  { id: "xrp", name: "Ripple", symbol: "XRP", network: "XRP Ledger", logo: LOGO_XRP },
+  { id: "doge", name: "Dogecoin", symbol: "DOGE", network: "Dogecoin Network", logo: LOGO_DOGE },
+  { id: "trx", name: "Tron", symbol: "TRX", network: "Tron TRC-20", logo: LOGO_TRX },
+  { id: "ada", name: "Cardano", symbol: "ADA", network: "Cardano Mainnet", logo: LOGO_ADA },
+  { id: "pol", name: "Polygon", symbol: "POL", network: "Polygon POS", logo: LOGO_POL },
+  { id: "xmr", name: "Monero", symbol: "XMR", network: "Monero Network", logo: LOGO_XMR },
+  { id: "ltc", name: "Litecoin", symbol: "LTC", network: "Litecoin Mainnet", logo: LOGO_LTC },
+  { id: "avax", name: "Avalanche", symbol: "AVAX", network: "Avalanche C-Chain", logo: LOGO_AVAX },
+];
+
 export const INITIAL_WALLETS: WalletMethod[] = [
   {
     id: "wallet-btc",

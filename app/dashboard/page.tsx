@@ -54,7 +54,7 @@ import {
 } from "@/components/ui/select";
 import { DealsDataTable } from "@/components/dashboard/deals-data-table";
 import { columns, DealsTableMeta } from "@/components/dashboard/deals-columns";
-import { getAdminWallets, WalletMethod } from "@/lib/escrow-store";
+import { getAdminWallets, WalletMethod, INITIAL_WALLETS } from "@/lib/escrow-store";
 
 interface TransactionItem {
   id: string;
@@ -365,7 +365,7 @@ export default function DashboardPage() {
   const [itemError, setItemError] = useState("");
 
   // Step 3: Vault & Wallets from Admin
-  const [availableWallets, setAvailableWallets] = useState<WalletMethod[]>([]);
+  const [availableWallets, setAvailableWallets] = useState<WalletMethod[]>(INITIAL_WALLETS);
   const [selectedWalletId, setSelectedWalletId] = useState<string>("wallet-btc");
   const [simulatedVaultAddress, setSimulatedVaultAddress] = useState("bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq");
   const [isCreatingDeal, setIsCreatingDeal] = useState(false);
@@ -1637,11 +1637,9 @@ export default function DashboardPage() {
                               }`}
                             >
                               <div className="w-7 h-7 rounded-lg bg-white/5 p-1 flex items-center justify-center shrink-0">
-                                <Image
+                                <img
                                   src={w.logo}
                                   alt={w.name}
-                                  width={20}
-                                  height={20}
                                   className="w-5 h-5 object-contain"
                                 />
                               </div>
@@ -1663,11 +1661,9 @@ export default function DashboardPage() {
                       <div className="p-4 rounded-xl bg-[#060D09] border border-emerald-500/40 space-y-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2.5">
-                            <Image
+                            <img
                               src={selectedPaymentWallet.logo}
                               alt={selectedPaymentWallet.name}
-                              width={24}
-                              height={24}
                               className="w-6 h-6 object-contain"
                             />
                             <div>

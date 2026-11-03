@@ -47,7 +47,12 @@ import {
   getAdminTransactions,
   saveAdminTransactions,
   getAdminUsers,
+  INITIAL_WALLETS,
+  INITIAL_TRANSACTIONS,
+  INITIAL_USERS,
   DEFAULT_BTC_QR_SVG,
+  CRYPTO_LOGO_PRESETS,
+  CryptoPreset,
 } from "@/lib/escrow-store";
 import { AdminSidebar, AdminTab } from "@/components/admin/AdminSidebar";
 
@@ -55,10 +60,10 @@ export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Core Data States
-  const [wallets, setWallets] = useState<WalletMethod[]>([]);
-  const [transactions, setTransactions] = useState<EscrowTransaction[]>([]);
-  const [users, setUsers] = useState<PlatformUser[]>([]);
+  // Core Data States (Initialized with default sets to match SSR and prevent hydration mismatches)
+  const [wallets, setWallets] = useState<WalletMethod[]>(INITIAL_WALLETS);
+  const [transactions, setTransactions] = useState<EscrowTransaction[]>(INITIAL_TRANSACTIONS);
+  const [users, setUsers] = useState<PlatformUser[]>(INITIAL_USERS);
 
   // UI States
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -75,8 +80,11 @@ export default function AdminDashboardPage() {
   const [newWalletAddress, setNewWalletAddress] = useState("");
   const [newWalletQrPhoto, setNewWalletQrPhoto] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const logoFileInputRef = useRef<HTMLInputElement | null>(null);
   const cardFileInputRef = useRef<HTMLInputElement | null>(null);
+  const cardLogoFileInputRef = useRef<HTMLInputElement | null>(null);
   const [targetWalletForUpload, setTargetWalletForUpload] = useState<string | null>(null);
+  const [targetWalletForLogoUpload, setTargetWalletForLogoUpload] = useState<string | null>(null);
 
   // Notification Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -149,6 +157,50 @@ export default function AdminDashboardPage() {
       }
     };
     reader.readAsDataURL(file);
+  };
+
+  // Handle Custom Crypto Logo Upload for Add Wallet Modal
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        setNewWalletLogo(reader.result);
+        showToast("Custom crypto logo uploaded!");
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Handle Logo Upload for existing wallet card
+  const handleCardLogoUpload = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    walletId: string
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        const updated = wallets.map((w) =>
+          w.id === walletId ? { ...w, logo: reader.result as string } : w
+        );
+        setWallets(updated);
+        saveAdminWallets(updated);
+        showToast("Wallet logo updated!");
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Select Preset Crypto
+  const handleSelectPreset = (preset: CryptoPreset) => {
+    setNewWalletLogo(preset.logo);
+    if (!newWalletName) setNewWalletName(preset.name);
+    if (!newWalletSymbol) setNewWalletSymbol(preset.symbol);
+    if (!newWalletNetwork) setNewWalletNetwork(preset.network);
+    showToast(`Selected ${preset.name} preset`);
   };
 
   // Save New Wallet Method
@@ -329,6 +381,19 @@ export default function AdminDashboardPage() {
         onChange={(e) => {
           if (targetWalletForUpload) {
             handleCardQrPhotoUpload(e, targetWalletForUpload);
+          }
+        }}
+      />
+
+      {/* Hidden File Input for Card Custom Logo Upload */}
+      <input
+        type="file"
+        ref={cardLogoFileInputRef}
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => {
+          if (targetWalletForLogoUpload) {
+            handleCardLogoUpload(e, targetWalletForLogoUpload);
           }
         }}
       />
@@ -981,14 +1046,25 @@ export default function AdminDashboardPage() {
                       {/* Wallet Card Header with Logo */}
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center p-2">
-                            <Image
-                              src={wallet.logo}
-                              alt={wallet.name}
-                              width={32}
-                              height={32}
-                              className="w-8 h-8 object-contain"
-                            />
+                          <div className="relative group/logo">
+                            <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center p-2">
+                              <img
+                                src={wallet.logo}
+                                alt={wallet.name}
+                                className="w-8 h-8 object-contain"
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setTargetWalletForLogoUpload(wallet.id);
+                                cardLogoFileInputRef.current?.click();
+                              }}
+                              title="Upload Custom Logo"
+                              className="absolute -bottom-1 -right-1 p-1 rounded-md bg-[#10171B] border border-white/20 text-slate-400 hover:text-[#00F59B] text-[10px] cursor-pointer shadow transition-colors"
+                            >
+                              <UploadSimple weight="bold" className="w-3 h-3" />
+                            </button>
                           </div>
                           <div>
                             <div className="flex items-center gap-2">
@@ -1169,39 +1245,85 @@ export default function AdminDashboardPage() {
                 />
               </div>
 
-              {/* Logo Selection */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-300">
-                  Select Crypto Logo
-                </label>
-                <div className="grid grid-cols-5 gap-2">
-                  {[
-                    { label: "Bitcoin", src: "/bitcoinlogo.svg" },
-                    { label: "Ethereum", src: "/ethereumlogo.svg" },
-                    { label: "Tether", src: "/tetherlogo.svg" },
-                    { label: "USDC", src: "/usdclogo.svg" },
-                    { label: "Solana", src: "/solanalogo.svg" },
-                  ].map((logo) => (
-                    <button
-                      key={logo.src}
-                      type="button"
-                      onClick={() => setNewWalletLogo(logo.src)}
-                      className={`p-2.5 rounded-xl border flex flex-col items-center gap-1 cursor-pointer transition-all ${
-                        newWalletLogo === logo.src
-                          ? "bg-[#00F59B]/15 border-[#00F59B] text-[#00F59B]"
-                          : "bg-[#10171B] border-white/10 text-slate-400 hover:text-white"
-                      }`}
-                    >
-                      <Image
-                        src={logo.src}
-                        alt={logo.label}
-                        width={24}
-                        height={24}
-                        className="w-6 h-6 object-contain"
+              {/* Logo Selection: Upload Custom Logo + Expanded Presets */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-slate-300">
+                    Crypto Logo
+                  </label>
+                  <span className="text-[11px] text-[#00F59B]">
+                    Pick preset or upload any custom coin
+                  </span>
+                </div>
+
+                {/* Upload Custom Logo Box */}
+                <div className="p-3 rounded-xl bg-[#10171B] border border-white/10 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center p-2 shrink-0">
+                      <img
+                        src={newWalletLogo}
+                        alt="Active Logo"
+                        className="w-8 h-8 object-contain"
                       />
-                      <span className="text-[10px] font-medium">{logo.label}</span>
-                    </button>
-                  ))}
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-white">Selected Logo</div>
+                      <div className="text-[11px] text-slate-400">
+                        Upload custom coin logo (PNG, JPG, SVG, WebP)
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <input
+                      type="file"
+                      ref={logoFileInputRef}
+                      accept="image/*"
+                      onChange={handleLogoUpload}
+                      className="hidden"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => logoFileInputRef.current?.click()}
+                      className="border-white/15 bg-white/5 hover:bg-white/10 text-xs h-9 cursor-pointer flex items-center gap-1.5"
+                    >
+                      <UploadSimple weight="bold" className="w-4 h-4 text-[#00F59B]" />
+                      <span>Upload Logo</span>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Expanded Presets Library */}
+                <div className="space-y-1.5">
+                  <div className="text-[11px] text-slate-400 font-medium">
+                    Or select from 14 popular presets:
+                  </div>
+                  <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 max-h-36 overflow-y-auto p-1.5 bg-[#060D09] rounded-xl border border-white/5">
+                    {CRYPTO_LOGO_PRESETS.map((preset) => (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        onClick={() => handleSelectPreset(preset)}
+                        className={`p-2 rounded-xl border flex flex-col items-center gap-1 cursor-pointer transition-all ${
+                          newWalletLogo === preset.logo
+                            ? "bg-[#00F59B]/15 border-[#00F59B] text-[#00F59B] shadow-sm"
+                            : "bg-[#10171B] border-white/5 text-slate-400 hover:text-white hover:bg-white/5"
+                        }`}
+                        title={`${preset.name} (${preset.symbol})`}
+                      >
+                        <img
+                          src={preset.logo}
+                          alt={preset.name}
+                          className="w-5 h-5 object-contain"
+                        />
+                        <span className="text-[10px] font-bold truncate max-w-full">
+                          {preset.symbol}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -1292,11 +1414,9 @@ export default function AdminDashboardPage() {
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Image
+                <img
                   src={zoomQrWallet.logo}
                   alt={zoomQrWallet.name}
-                  width={24}
-                  height={24}
                   className="w-6 h-6 object-contain"
                 />
                 <h3 className="font-bold text-white text-base">
