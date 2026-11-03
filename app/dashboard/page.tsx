@@ -54,6 +54,7 @@ import {
 } from "@/components/ui/select";
 import { DealsDataTable } from "@/components/dashboard/deals-data-table";
 import { columns, DealsTableMeta } from "@/components/dashboard/deals-columns";
+import { getAdminWallets, WalletMethod } from "@/lib/escrow-store";
 
 interface TransactionItem {
   id: string;
@@ -363,8 +364,10 @@ export default function DashboardPage() {
   const [addedItems, setAddedItems] = useState<TransactionItem[]>([]);
   const [itemError, setItemError] = useState("");
 
-  // Step 3: Vault simulation
-  const [simulatedVaultAddress, setSimulatedVaultAddress] = useState("0x71C8A9b2940Ec78a94F66C239B8");
+  // Step 3: Vault & Wallets from Admin
+  const [availableWallets, setAvailableWallets] = useState<WalletMethod[]>([]);
+  const [selectedWalletId, setSelectedWalletId] = useState<string>("wallet-btc");
+  const [simulatedVaultAddress, setSimulatedVaultAddress] = useState("bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq");
   const [isCreatingDeal, setIsCreatingDeal] = useState(false);
 
   // Deal interaction modals & toasts
@@ -388,9 +391,20 @@ export default function DashboardPage() {
       } else {
         setUser(null);
       }
+
+      // Load active custody wallets from admin store
+      const adminWallets = getAdminWallets();
+      setAvailableWallets(adminWallets);
+      if (adminWallets.length > 0) {
+        setSelectedWalletId(adminWallets[0].id);
+        setSimulatedVaultAddress(adminWallets[0].address);
+      }
+
       setIsAuthChecking(false);
     }
   }, []);
+
+  const selectedPaymentWallet = availableWallets.find((w) => w.id === selectedWalletId) || availableWallets[0];
 
   const handleLogout = () => {
     if (typeof window !== "undefined") {
@@ -463,9 +477,12 @@ export default function DashboardPage() {
       ]);
     }
 
-    // Generate simulated fresh multi-sig vault address
-    const hex = Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join("");
-    setSimulatedVaultAddress(`0x${hex.substring(0, 4)}...${hex.substring(36)}`);
+    // Connect to matching admin wallet address
+    const matchingWallet = availableWallets.find((w) => w.symbol.toUpperCase() === currency.toUpperCase()) || availableWallets[0];
+    if (matchingWallet) {
+      setSelectedWalletId(matchingWallet.id);
+      setSimulatedVaultAddress(matchingWallet.address);
+    }
     setWizardStep(3);
   };
 
@@ -764,6 +781,13 @@ export default function DashboardPage() {
                   <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-950 border border-emerald-500/40 text-[#00F59B] text-xs font-semibold">
                     <CheckCircle weight="bold" className="w-3.5 h-3.5" /> Authenticated Session
                   </span>
+                  <Link
+                    href="/admin"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/5 hover:bg-[#00F59B]/20 text-slate-300 hover:text-[#00F59B] border border-white/10 text-xs font-semibold transition-colors"
+                  >
+                    <ShieldCheck weight="bold" className="w-3.5 h-3.5 text-[#00F59B]" />
+                    <span>Admin Dashboard</span>
+                  </Link>
                 </div>
                 <p className="text-xs text-slate-400 mt-0.5">
                   Multi-Sig Threshold Keys Active • 2-of-3 Hardware Quorum
@@ -1580,24 +1604,123 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  {/* Vault Address Box */}
-                  <div className="p-3.5 rounded-xl bg-[#060D09] border border-emerald-500/40 flex items-center justify-between">
-                    <div>
-                      <div className="text-[10px] uppercase font-bold text-[#00F59B] flex items-center gap-1">
-                        <Lock weight="bold" className="w-3.5 h-3.5" /> Allocated Smart Contract Vault Address
-                      </div>
-                      <div className="font-mono text-xs text-slate-200 mt-0.5">
-                        {simulatedVaultAddress}
-                      </div>
+                  {/* DYNAMIC LIST OF WALLETS FOR PAYMENT (Configured from Admin) */}
+                  <div className="space-y-3 pt-2">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+                        <Coins weight="bold" className="w-4 h-4 text-[#00F59B]" /> Select Escrow Payment Wallet
+                      </label>
+                      <span className="text-[11px] text-[#00F59B] font-semibold">
+                        {availableWallets.filter((w) => w.isActive).length} Wallets Available
+                      </span>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(simulatedVaultAddress, "step3-vault")}
-                      className="p-2 rounded-lg bg-emerald-950/80 text-[#00F59B] hover:bg-emerald-900 transition-colors cursor-pointer"
-                      title="Copy Address"
-                    >
-                      {copiedId === "step3-vault" ? <Check weight="bold" className="w-4 h-4" /> : <Copy weight="bold" className="w-4 h-4" />}
-                    </button>
+
+                    {/* List of Wallets selection */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                      {availableWallets
+                        .filter((w) => w.isActive)
+                        .slice(0, 8)
+                        .map((w) => {
+                          const isSelected = selectedPaymentWallet?.id === w.id;
+                          return (
+                            <button
+                              key={w.id}
+                              type="button"
+                              onClick={() => {
+                                setSelectedWalletId(w.id);
+                                setSimulatedVaultAddress(w.address);
+                              }}
+                              className={`p-2.5 rounded-xl border flex items-center gap-2.5 cursor-pointer transition-all text-left ${
+                                isSelected
+                                  ? "bg-[#00F59B]/15 border-[#00F59B] text-white shadow-sm ring-1 ring-[#00F59B]/30"
+                                  : "bg-[#060D09] border-white/10 text-slate-400 hover:text-white hover:bg-white/5"
+                              }`}
+                            >
+                              <div className="w-7 h-7 rounded-lg bg-white/5 p-1 flex items-center justify-center shrink-0">
+                                <Image
+                                  src={w.logo}
+                                  alt={w.name}
+                                  width={20}
+                                  height={20}
+                                  className="w-5 h-5 object-contain"
+                                />
+                              </div>
+                              <div className="truncate">
+                                <div className="text-xs font-bold truncate text-white">
+                                  {w.name}
+                                </div>
+                                <div className="text-[10px] text-slate-400 truncate font-mono">
+                                  {w.symbol}
+                                </div>
+                              </div>
+                            </button>
+                          );
+                        })}
+                    </div>
+
+                    {/* Active Selected Payment Wallet Details with QR Photo & Text Address */}
+                    {selectedPaymentWallet && (
+                      <div className="p-4 rounded-xl bg-[#060D09] border border-emerald-500/40 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2.5">
+                            <Image
+                              src={selectedPaymentWallet.logo}
+                              alt={selectedPaymentWallet.name}
+                              width={24}
+                              height={24}
+                              className="w-6 h-6 object-contain"
+                            />
+                            <div>
+                              <div className="text-xs font-bold text-white flex items-center gap-2">
+                                <span>{selectedPaymentWallet.name} Escrow Custody Vault</span>
+                                <span className="text-[10px] px-2 py-0.5 bg-emerald-500/20 text-[#00F59B] rounded font-mono">
+                                  {selectedPaymentWallet.network}
+                                </span>
+                              </div>
+                              <div className="text-[11px] text-slate-400">
+                                Send collateral to this address or scan the QR code photo below.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row items-center gap-4 bg-[#0B1013] p-3.5 rounded-xl border border-white/5">
+                          {/* QR Code Photo */}
+                          <div className="w-24 h-24 bg-white p-1.5 rounded-xl shrink-0 flex items-center justify-center shadow-md">
+                            <img
+                              src={selectedPaymentWallet.qrPhoto}
+                              alt={`${selectedPaymentWallet.name} QR Code`}
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+
+                          {/* Address as Selectable Text */}
+                          <div className="flex-1 w-full space-y-1.5">
+                            <div className="text-[10px] uppercase font-bold text-[#00F59B] flex items-center justify-between">
+                              <span className="flex items-center gap-1">
+                                <Lock weight="bold" className="w-3 h-3" /> Official Deposit Address (Text)
+                              </span>
+                              <span className="text-slate-400 font-normal">Selectable</span>
+                            </div>
+                            <div className="font-mono text-xs text-slate-200 break-all select-all bg-[#060D09] p-2.5 rounded-lg border border-white/10 flex items-center justify-between gap-2">
+                              <span>{selectedPaymentWallet.address}</span>
+                              <button
+                                type="button"
+                                onClick={() => handleCopy(selectedPaymentWallet.address, "step3-vault")}
+                                className="p-2 rounded-lg bg-emerald-950 text-[#00F59B] hover:bg-emerald-900 transition-colors shrink-0 cursor-pointer"
+                                title="Copy Address"
+                              >
+                                {copiedId === "step3-vault" ? (
+                                  <Check weight="bold" className="w-4 h-4 text-[#00F59B]" />
+                                ) : (
+                                  <Copy weight="bold" className="w-4 h-4" />
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 

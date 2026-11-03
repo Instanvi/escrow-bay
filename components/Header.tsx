@@ -74,6 +74,12 @@ export default function Header() {
             >
               FAQ
             </a>
+            <Link
+              href="/admin"
+              className="text-base font-semibold text-slate-200 hover:text-[#00F59B] transition-colors"
+            >
+              Admin
+            </Link>
             {currentUser && (
               <Link
                 href="/dashboard"
